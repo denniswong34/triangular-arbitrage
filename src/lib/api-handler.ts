@@ -38,7 +38,7 @@ export class ApiHandler {
     if (!api) {
       return;
     }
-    return await api.createOrder(order.symbol, order.type, order.side, String(order.amount), String(order.price));
+    return await api.createOrder(order.symbol, order.type, order.side, order.amount, order.price);
   }
 
   async queryOrder(exchange: types.IExchange, orderId: string, symbol: string): Promise<ccxt.Order | undefined> {

@@ -41,9 +41,17 @@ export class Engine {
     const a = this.getEdge(tickers, abc.a, abc.b);
     const b = this.getEdge(tickers, abc.b, abc.c);
     const c = this.getEdge(tickers, abc.c, abc.a);
-    if (!a || !b || !c || !a.price || !b.price || !c.price) {
+
+    if (!a || !b || !c) {
       return;
     }
+    if(!a.price || !b.price || !c.price) {
+      logger.error("Price is null...");
+      logger.error(JSON.stringify(a, null, 2));
+      logger.error(JSON.stringify(b, null, 2));
+      logger.error(JSON.stringify(c, null, 2));
+    }
+
     const rate = Helper.getTriangleRate(a, b, c);
     return <types.ITriangle>{
       id: a.coinFrom + '-' + b.coinFrom + '-' + c.coinFrom,

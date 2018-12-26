@@ -46,10 +46,10 @@ export class Engine {
       return;
     }
     if(!a.price || !b.price || !c.price) {
-      logger.error("Price is null...");
-      logger.error(JSON.stringify(a, null, 2));
-      logger.error(JSON.stringify(b, null, 2));
-      logger.error(JSON.stringify(c, null, 2));
+      logger.debug(JSON.stringify(a, null, 2));
+      logger.debug(JSON.stringify(b, null, 2));
+      logger.debug(JSON.stringify(c, null, 2));
+      return;
     }
 
     const rate = Helper.getTriangleRate(a, b, c);

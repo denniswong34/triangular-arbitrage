@@ -3,6 +3,7 @@ import { Rate } from '../rate';
 import { Queue } from '../storage/queue';
 import { BigNumber } from 'bignumber.js';
 import * as bitbank from 'bitbank-handler';
+import {logger} from './logger';
 
 const ccxt = require('ccxt');
 const config = require('config');
@@ -157,6 +158,10 @@ export class Helper {
   static getTriangleRate(a: types.IEdge, b: types.IEdge, c: types.IEdge) {
     // 利率 = (1/priceA/priceB*priceC-1)-1
     // 资本金
+      logger.debug("getTriangleRate...");
+      logger.debug("A:" + a);
+      logger.debug("B:" + b);
+      logger.debug("C:" + a);
     const capital = new BigNumber(1);
     let step1Rate = new BigNumber(a.price);
     if (a.side === 'buy') {

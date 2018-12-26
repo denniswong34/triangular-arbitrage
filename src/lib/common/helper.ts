@@ -159,9 +159,9 @@ export class Helper {
     // 利率 = (1/priceA/priceB*priceC-1)-1
     // 资本金
       logger.debug("getTriangleRate...");
-      logger.debug("A:" + a);
-      logger.debug("B:" + b);
-      logger.debug("C:" + a);
+      logger.debug("A:" + JSON.stringify(a, null, 2));
+      logger.debug("B:" + JSON.stringify(b, null, 2));
+      logger.debug("C:" + JSON.stringify(c, null, 2));
     const capital = new BigNumber(1);
     let step1Rate = new BigNumber(a.price);
     if (a.side === 'buy') {

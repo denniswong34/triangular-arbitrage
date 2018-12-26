@@ -90,6 +90,7 @@ export class Mocker extends ApiHandler {
     // 获取交易精度
     const priceScale = Helper.getPriceScale(exchange.pairs, triangle.a.pair);
     if (!priceScale || !priceScale.cost) {
+      logger.debug(`未获取交易精度${tradeTriangle.coin}！！`);
       return;
     }
     // 检查最小交易数量
@@ -114,6 +115,7 @@ export class Mocker extends ApiHandler {
     // ---------------------- A点开始------------------------
     const tradeEdgeA = this.getMockTradeEdge(exchange.pairs, triangle.a, tradeAmount);
     if (!tradeEdgeA) {
+      logger.debug(`A点开始 Failed..`);
       return;
     }
     tradeTriangle.a = tradeEdgeA;
@@ -138,6 +140,7 @@ export class Mocker extends ApiHandler {
     });
     const tradeEdgeB = this.getMockTradeEdge(exchange.pairs, triangle.b, bAmount);
     if (!tradeEdgeB) {
+      logger.debug(`B点开始 Failed..`);
       return;
     }
     tradeTriangle.b = tradeEdgeB;
@@ -153,6 +156,7 @@ export class Mocker extends ApiHandler {
     }
     const tradeEdgeC = this.getMockTradeEdge(exchange.pairs, triangle.c, cAmount);
     if (!tradeEdgeC) {
+      logger.debug(`C点开始 Failed..`);
       return;
     }
     tradeTriangle.c = tradeEdgeC;

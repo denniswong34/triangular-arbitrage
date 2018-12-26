@@ -45,10 +45,10 @@ export class Engine {
     if (!a || !b || !c) {
       return;
     }
-    if(!a.price || !b.price || !c.price) {
-      logger.debug(JSON.stringify(a, null, 2));
+    if (!a.price || !b.price || !c.price) {
+      /*logger.debug(JSON.stringify(a, null, 2));
       logger.debug(JSON.stringify(b, null, 2));
-      logger.debug(JSON.stringify(c, null, 2));
+      logger.debug(JSON.stringify(c, null, 2));*/
       return;
     }
 

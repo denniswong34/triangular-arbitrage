@@ -41,7 +41,7 @@ export class Engine {
     const a = this.getEdge(tickers, abc.a, abc.b);
     const b = this.getEdge(tickers, abc.b, abc.c);
     const c = this.getEdge(tickers, abc.c, abc.a);
-    if (!a || !b || !c) {
+    if (!a || !b || !c || !a.price || !b.price || !c.price) {
       return;
     }
     const rate = Helper.getTriangleRate(a, b, c);

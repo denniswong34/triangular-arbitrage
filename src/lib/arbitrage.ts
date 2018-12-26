@@ -140,6 +140,7 @@ export class TriangularArbitrage extends Event {
       logger.debug(`监视行情[终了] ${Helper.endTimer(timer)}`);
     } catch (err) {
       logger.error(`监视行情[异常](${Helper.endTimer(timer)}): ${JSON.stringify(err)}`);
+        logger.error(`监视行情[异常](${Helper.endTimer(timer)}): ` + err.stack);
     }
   }
 }

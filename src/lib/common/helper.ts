@@ -22,8 +22,27 @@ export class Helper {
   static getExchange(exchangeId: types.ExchangeId): types.IExchange | undefined {
     const privateKey = Helper.getPrivateKey(exchangeId);
     switch (exchangeId) {
+      case types.ExchangeId.Bitbank:
+          if (privateKey) {
+              return {
+                  id: exchangeId,
+                  endpoint: {
+                      private: new bitbank.Bitbank({
+                          apiKey: privateKey.apiKey,
+                          apiSecret: privateKey.secret,
+                      }),
+                  },
+              };
+          }
+          return {
+              id: exchangeId,
+              endpoint: {
+                  public: new bitbank.Bitbank({}),
+              },
+          };
       case types.ExchangeId.KuCoin:
       case types.ExchangeId.Binance:
+      default:
         let ws, rest;
         if (exchangeId === types.ExchangeId.Binance) {
           ws = new binance.BinanceWS();
@@ -54,24 +73,7 @@ export class Helper {
             rest,
           },
         };
-      case types.ExchangeId.Bitbank:
-        if (privateKey) {
-          return {
-            id: exchangeId,
-            endpoint: {
-              private: new bitbank.Bitbank({
-                apiKey: privateKey.apiKey,
-                apiSecret: privateKey.secret,
-              }),
-            },
-          };
-        }
-        return {
-          id: exchangeId,
-          endpoint: {
-            public: new bitbank.Bitbank({}),
-          },
-        };
+
     }
   }
 

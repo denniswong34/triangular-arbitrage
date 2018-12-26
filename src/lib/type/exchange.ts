@@ -85,6 +85,8 @@ export const SupportExchanges = [
   {
         id: ExchangeId.Poloniex,
   },
+]
+
 export interface ICredentials {
   apiKey: string;
   secret: string;

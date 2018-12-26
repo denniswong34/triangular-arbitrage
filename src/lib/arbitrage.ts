@@ -126,9 +126,11 @@ export class TriangularArbitrage extends Event {
       }
       // 更新套利数据
       if (ranks[0]) {
-        // logger.info(`选出套利组合第一名：${candidates[0].id}, 预测利率(扣除手续费): ${ranks[0].profitRate[0]}`);
+        logger.info(`选出套利组合第一名：${candidates[0].id}, 预测利率(扣除手续费): ${ranks[0].profitRate[0]}`);
         // 执行三角套利
         this.emit('placeOrder', exchange, candidates[0]);
+      } else {
+          logger.debug('Rank[0] is not available...');
       }
 
       /*const output = candidates.length > 5 ? candidates.slice(0, 5) : candidates.slice(0, candidates.length);

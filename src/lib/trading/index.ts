@@ -35,12 +35,13 @@ export class Trading {
 
       const limitCheck = await Helper.checkQueueLimit(this.storage.queue)
       if (!limitCheck) {
+        logger.debug(`LimitCheck is not allow...`);
         return;
       }
       const testTrade = await this.testOrder(exchange, triangle);
       // 未通过检查时返回
       if (!testTrade || !testTrade.id) {
-        // logger.info(`套利组合未通过可行性检测！！`);
+        logger.info(`套利组合未通过可行性检测！！`);
         return;
       }
 

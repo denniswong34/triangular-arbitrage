@@ -71,12 +71,12 @@ export class ApiHandler {
     return await api.fetchOrder(orderId, symbol);
   }
   
-  async queryOrder(exchange: types.IExchange, orderId: string, symbol: string, parameters: JSONObject): Promise<ccxt.Order | undefined> {
+  async queryOrderForKucoin(exchange: types.IExchange, orderId: string, symbol: string, side: string): Promise<ccxt.Order | undefined> {
     const api = <ccxt.Exchange>exchange.endpoint.private;
     if (!api) {
       return;
     }
-    return await api.fetchOrder(orderId, symbol, parameters);
+    return await api.fetchOrder(orderId, symbol, { type: (side === 'buy' ? "BUY" : "SELL") });
   }
 
   async queryOrderStatus(exchange: types.IExchange, orderId: string, symbol: string) {

@@ -111,7 +111,10 @@ export class Order extends ApiHandler {
       const nextC = async () => {
         logger.info('执行nextC...');
 
-        const orderRes = await this.queryOrder(exchange, tradeB.orderId, tradeB.pair);
+        //const orderRes = await this.queryOrder(exchange, tradeB.orderId, tradeB.pair);
+		const orderRes = (exchange.id == 'kucoin') ? 
+							await this.queryOrderForKucoin(exchange, tradeB.orderId, tradeB.pair, tradeB.side.toLowerCase()) : 
+							await this.queryOrder(exchange, tradeB.orderId, tradeB.pair);
         if (!orderRes) {
           return false;
         }
@@ -176,7 +179,10 @@ export class Order extends ApiHandler {
       }
       const completedC = async () => {
         logger.info('completedC...');
-        const orderRes = await this.queryOrder(exchange, tradeC.orderId, tradeC.pair);
+        //const orderRes = await this.queryOrder(exchange, tradeC.orderId, tradeC.pair);
+		const orderRes = (exchange.id == 'kucoin') ? 
+							await this.queryOrderForKucoin(exchange, tradeC.orderId, tradeC.pair, tradeC.side.toLowerCase()) : 
+							await this.queryOrder(exchange, tradeC.orderId, tradeC.pair);
         if (!orderRes) {
           return false;
         }

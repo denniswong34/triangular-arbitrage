@@ -126,7 +126,7 @@ export class Helper {
 	cc.setApiKey(config.account["cryptoCompare"].apiKey);
 	let api = new ApiHandler();
 	
-	const processTriangle = async (pre, tri) => {
+	const processTriangle = async (pre: types.ITriangle, tri: types.ITriangle) => {
         if (tri.rate <= 0) {
           return;
         }

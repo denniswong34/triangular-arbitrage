@@ -205,6 +205,7 @@ export class Helper {
       logger.debug(`Symbol is null in getPriceScale.. Pairs: ` + JSON.stringify(pairs) + `, pairName: ` + pairName);
       return;
     }
+    logger.debug(`Symbol: ` + JSON.stringify(symbol));
     return {
       amount: symbol.precision.amount,
       price: symbol.precision.price,

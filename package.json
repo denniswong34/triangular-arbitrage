@@ -38,6 +38,7 @@
     "express": "^4.16.2",
     "glob": "^7.1.2",
     "moment": "^2.20.1",
+    "node-coinmarketcap": "^0.2.0",
     "node-fetch": "^2.3.0",
     "pouchdb": "^6.4.3",
     "pouchdb-find": "^6.4.3",

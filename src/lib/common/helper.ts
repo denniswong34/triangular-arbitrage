@@ -4,11 +4,13 @@ import { Queue } from '../storage/queue';
 import { BigNumber } from 'bignumber.js';
 import * as bitbank from 'bitbank-handler';
 import {logger} from './logger';
+import { ApiHandler } from '../api-handler';
 
 const ccxt = require('ccxt');
 const config = require('config');
 const excTime = require('execution-time');
 const binance = require('binance');
+const cc = require('cryptocompare');
 
 export class Helper {
   static getPrivateKey(exchangeId: types.ExchangeId) {
@@ -119,8 +121,11 @@ export class Helper {
    * 获取排行数据
    * @param triangles 三角套利数组
    */
-  static getRanks(exchangeId: types.ExchangeId, triangles: types.ITriangle[]) {
+  static getRanks(exchange: types.IExchange, triangles: types.ITriangle[]) {
     const ranks: types.IRank[] = [];
+	cc.setApiKey(config.account["cryptoCompare"].apiKey);
+	let api = new ApiHandler();
+	
     triangles.reduce(
       (pre, tri) => {
         if (tri.rate <= 0) {
@@ -128,13 +133,28 @@ export class Helper {
         }
         const rate = new BigNumber(tri.rate);
         let fee = [0, 0];
-        if (exchangeId === types.ExchangeId.Binance) {
+        if (exchange.id === types.ExchangeId.Binance) {
           fee = [rate.times(0.1).toNumber(), rate.times(0.05).toNumber()];
         }
         const profitRate = [rate.minus(fee[0]), rate.minus(fee[1])];
         if (profitRate[0].isLessThan(config.arbitrage.minRateProfit)) {
           return;
         }
+		
+		//Refill triangle quantity
+		await api.refillTriangleQuantity(exchange, tri);
+		
+		tri.a.amountInUSD = ((tri.a.side == 'buy') ? await cc.price(tri.a.coinFrom, 'USD') : await cc.price(tri.b.coinFrom, 'USD')) * tri.a.quantity;
+		tri.b.amountInUSD = ((tri.b.side == 'buy') ? await cc.price(tri.b.coinFrom, 'USD') : await cc.price(tri.c.coinFrom, 'USD')) * tri.b.quantity;
+		tri.c.amountInUSD = ((tri.c.side == 'buy') ? await cc.price(tri.c.coinFrom, 'USD') : await cc.price(tri.a.coinFrom, 'USD')) * tri.c.quantity;
+		
+		logger.debug(`Triangle after refill quantity and USD Value: ${JSON.stringify(tri)}`);
+		let minAmountInUSD = Math.min(tri.a.amountInUSD, tri.b.amountInUSD, tri.c.amountInUSD);
+		if(minAmountInUSD < config.arbitrage.minProfitInUSD) {
+			logger.debug(`Triangle removed due to minAmountInUSD (${minAmountInUSD}) is less than ${config.arbitrage.minProfitInUSD}`);
+			return;
+		}
+			
         const rank: types.IRank = {
           stepA: tri.a.coinFrom,
           stepB: tri.b.coinFrom,

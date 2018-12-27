@@ -209,7 +209,7 @@ export class Helper {
     return {
       amount: symbol.precision.amount,
       price: symbol.precision.price,
-      cost: symbol.limits.cost ? symbol.limits.cost.min : symbol.info.low * symbol.limits.amount.min,
+      cost: symbol.limits.cost ? symbol.limits.cost.min : new BigNumber(symbol.info.low * symbol.limits.amount.min).toFixed(symbol.precision.amount ? symbol.precision.amount : 8),
     };
   }
 

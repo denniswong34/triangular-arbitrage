@@ -64,13 +64,14 @@ export class Mocker extends ApiHandler {
       logger.error('交易所相关参数出错！！');
       return;
     }
-
+    logger.debug('交易所相关参数 PASS！！');
     // 查询资产
     const balances = await this.getBalance(exchange);
     if (!balances) {
       logger.debug('未查找到持有资产！！');
       return;
     }
+    logger.debug('持有资产 PASS: ' + JSON.stringify(balances));
 
     const tradeTriangle = <types.ITradeTriangle>{
       coin: triangle.a.coinFrom,
@@ -82,17 +83,22 @@ export class Mocker extends ApiHandler {
       logger.debug(`未查找到持有${tradeTriangle.coin}！！`);
       return;
     }
+    logger.debug(`持有资产 ${tradeTriangle.coin} PASS: ` + JSON.stringify(asset));
     const free = new BigNumber(asset.free);
     if (free.isZero()) {
       logger.debug(`未查找到持有${tradeTriangle.coin}！！`);
       return;
     }
+    logger.debug(`持有 ${tradeTriangle.coin} PASS: ` + JSON.stringify(free));
+
     // 获取交易精度
     const priceScale = Helper.getPriceScale(exchange.pairs, triangle.a.pair);
     if (!priceScale || !priceScale.cost) {
       logger.debug(`未获取交易精度${tradeTriangle.coin}！！`);
       return;
     }
+    logger.debug(`获取交易精度${tradeTriangle.coin}: ` + JSON.stringify(priceScale));
+
     // 检查最小交易数量
     let minAmount;
     if (triangle.a.coinFrom.toUpperCase() !== 'BTC') {

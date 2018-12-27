@@ -202,6 +202,7 @@ export class Helper {
   static getPriceScale(pairs: types.IPairs, pairName: string): types.IPrecision | undefined {
     const symbol = pairs[pairName];
     if (!symbol) {
+      logger.debug(`Symbol is null in getPriceScale.. Pairs: ` + JSON.stringify(pairs) + `, pairName: ` + pairName);
       return;
     }
     return {

@@ -141,19 +141,14 @@ export class Helper {
 		//Refill triangle quantity
 		await api.refillTriangleQuantity(exchange, tri);
 		
-		logger.debug("Start cmc multi function......");
+		logger.debug("Start cmc get USD function......");
 		
 		let cmc = new ccxt.coinmarketcap();
-		let ticker = await cmc.fetchTicker(tri.a.coinFrom + "/USD");
-		logger.debug(JSON.stringify(ticker));
-		  
-		/*
-		tri.a.amountInUSD = ((tri.a.side == 'buy') ? coins.get(tri.a.coinFrom).price_usd : coins.get(tri.b.coinFrom).price_usd) * tri.a.quantity;
-		tri.b.amountInUSD = ((tri.b.side == 'buy') ? coins.get(tri.b.coinFrom).price_usd : coins.get(tri.c.coinFrom).price_usd) * tri.b.quantity;
-		tri.c.amountInUSD = ((tri.c.side == 'buy') ? coins.get(tri.c.coinFrom).price_usd : coins.get(tri.a.coinFrom).price_usd) * tri.c.quantity;
-		*/
+		tri.a.amountInUSD = ((tri.a.side == 'buy') ? (await cmc.fetchTicker(tri.a.coinFrom + "/USD")).last : (await cmc.fetchTicker(tri.b.coinFrom + "/USD")).last) * tri.a.quantity;
+		tri.b.amountInUSD = ((tri.b.side == 'buy') ? (await cmc.fetchTicker(tri.b.coinFrom + "/USD")).last : (await cmc.fetchTicker(tri.c.coinFrom + "/USD")).last) * tri.b.quantity;
+		tri.c.amountInUSD = ((tri.c.side == 'buy') ? (await cmc.fetchTicker(tri.c.coinFrom + "/USD")).last : (await cmc.fetchTicker(tri.a.coinFrom + "/USD")).last) * tri.c.quantity;
 		
-		//logger.debug(`Triangle after refill quantity and USD Value: ${JSON.stringify(tri)}`);
+		logger.debug(`Triangle after refill quantity and USD Value: ${JSON.stringify(tri)}`);
 		let minAmountInUSD = Math.min(tri.a.amountInUSD, tri.b.amountInUSD, tri.c.amountInUSD);
 		if(!minAmountInUSD || minAmountInUSD < config.arbitrage.minProfitInUSD) {
 			logger.debug(`Triangle removed due to minAmountInUSD (${minAmountInUSD}) is less than ${config.arbitrage.minProfitInUSD}`);

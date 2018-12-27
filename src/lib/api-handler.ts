@@ -71,7 +71,7 @@ export class ApiHandler {
     return await api.fetchOrder(orderId, symbol);
   }
   
-  async queryOrder(exchange: types.IExchange, orderId: string, symbol: string, parameters): Promise<ccxt.Order | undefined> {
+  async queryOrder(exchange: types.IExchange, orderId: string, symbol: string, parameters: JSONObject): Promise<ccxt.Order | undefined> {
     const api = <ccxt.Exchange>exchange.endpoint.private;
     if (!api) {
       return;

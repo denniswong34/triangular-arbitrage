@@ -45,7 +45,7 @@ export class Order extends ApiHandler {
       const nextB = async () => {
         logger.info('执行nextB...');
         const orderRes = (exchange.id == 'kucoin') ? 
-							await this.queryOrder(exchange, testTrade.a.orderId, testTrade.a.pair, { type: (order.side === 'buy' ? "BUY" : "SELL") } ) : 
+							await this.queryOrder(exchange, testTrade.a.orderId, testTrade.a.pair, { type: (testTrade.a.side.toLowerCase() === 'buy' ? "BUY" : "SELL") } ) : 
 							await this.queryOrder(exchange, testTrade.a.orderId, testTrade.a.pair);
         if (!orderRes) {
           return false;

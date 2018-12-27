@@ -3,8 +3,13 @@ import * as types from './type';
 import { Bitbank } from 'bitbank-handler';
 import { logger, Helper } from './common';
 
+const cmcTickerMap = {};
+const cmc = new ccxt.coinmarketcap();
+
 export { ccxt };
 export class ApiHandler {
+
+
   async getBalance(exchange: types.IExchange): Promise<types.IBalances | undefined> {
     const api = exchange.endpoint.private;
     if (!api) {
@@ -19,7 +24,14 @@ export class ApiHandler {
         return await api.fetchBalance();
     }
   }
-  
+
+  async getTickerFromCMC(ticker: string) {
+      if(!cmcTickerMap[ticker]) {
+          cmcTickerMap [] = (await cmc.fetchTicker(ticker)).last;
+      }
+      return cmcTickerMap[ticker];
+  }
+
   async refillTriangleQuantity (exchange: types.IExchange, triangle: types.ITriangle) {
 	const api = <ccxt.Exchange>exchange.endpoint.private;
     if (!api) {

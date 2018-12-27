@@ -32,6 +32,8 @@ export class Mocker extends ApiHandler {
       logger.debug(`未取得交易精度！！`);
       return;
     }
+    logger.debug(`priceScale: ${JSON.stringify(priceScale)}`);
+
     // 获取格式化精度(买->价格精度、卖->数量精度)
     const precision = edge.side.toLowerCase() === 'buy' ? priceScale.price : priceScale.amount;
     // 格式化购买数量(多余小数位舍弃)

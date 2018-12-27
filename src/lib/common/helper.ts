@@ -150,7 +150,7 @@ export class Helper {
 		//Refill triangle quantity
 		await api.refillTriangleQuantity(exchange, tri);
 		
-		await coinmarketcap.multi(coins => {
+		await coinmarketcap.multi(coins:any => {
 		  tri.a.amountInUSD = ((tri.a.side == 'buy') ? coins.get(tri.a.coinFrom).price_usd : coins.get(tri.b.coinFrom).price_usd) * tri.a.quantity;
 		  tri.b.amountInUSD = ((tri.b.side == 'buy') ? coins.get(tri.b.coinFrom).price_usd : coins.get(tri.c.coinFrom).price_usd) * tri.b.quantity;
 		  tri.c.amountInUSD = ((tri.c.side == 'buy') ? coins.get(tri.c.coinFrom).price_usd : coins.get(tri.a.coinFrom).price_usd) * tri.c.quantity;

@@ -71,7 +71,7 @@ export class Mocker extends ApiHandler {
       logger.debug('未查找到持有资产！！');
       return;
     }
-    logger.debug('持有资产 PASS: ' + JSON.stringify(balances));
+    logger.debug('持有资产 PASS!!');
 
     const tradeTriangle = <types.ITradeTriangle>{
       coin: triangle.a.coinFrom,

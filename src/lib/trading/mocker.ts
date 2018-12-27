@@ -89,7 +89,7 @@ export class Mocker extends ApiHandler {
       logger.debug(`未查找到持有${tradeTriangle.coin}！！`);
       return;
     }
-    logger.debug(`持有 ${tradeTriangle.coin} PASS: ` + JSON.stringify(free));
+    logger.debug(`持有 ${tradeTriangle.coin} PASS!!`);
 
     // 获取交易精度
     const priceScale = Helper.getPriceScale(exchange.pairs, triangle.a.pair);

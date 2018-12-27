@@ -5,18 +5,13 @@ import { BigNumber } from 'bignumber.js';
 import * as bitbank from 'bitbank-handler';
 import {logger} from './logger';
 import { ApiHandler } from '../api-handler';
-
-const globalAny:any = global;
-globalAny.fetch = require('node-fetch');
+import CoinMarketCap from 'coinmarketcap-extended-api'
 
 const ccxt = require('ccxt');
 const config = require('config');
 const excTime = require('execution-time');
 const binance = require('binance');
-const cc = require('cryptocompare');
-
-const CoinMarketCap = require("node-coinmarketcap");
-const coinmarketcap = new CoinMarketCap();
+const CMC = new CoinMarketCap();
 
 
 export class Helper {
@@ -151,14 +146,14 @@ export class Helper {
 		await api.refillTriangleQuantity(exchange, tri);
 		
 		logger.debug("Start cmc multi function......");
-		await coinmarketcap.multi(function (coins: any) {
-		  logger.debug("In cmc multi function......");
-		  tri.a.amountInUSD = ((tri.a.side == 'buy') ? coins.get(tri.a.coinFrom).price_usd : coins.get(tri.b.coinFrom).price_usd) * tri.a.quantity;
-		  tri.b.amountInUSD = ((tri.b.side == 'buy') ? coins.get(tri.b.coinFrom).price_usd : coins.get(tri.c.coinFrom).price_usd) * tri.b.quantity;
-		  tri.c.amountInUSD = ((tri.c.side == 'buy') ? coins.get(tri.c.coinFrom).price_usd : coins.get(tri.a.coinFrom).price_usd) * tri.c.quantity;
-		  logger.debug(`Triangle after refill quantity and USD Value: ${JSON.stringify(tri)}`);
-		});
-		logger.debug("End cmc multi function......");
+		let asset = await CMC.coinFromTicker(tri.a.coinFrom);
+		logger.debug(`asset: ${asset}`);
+		  
+		/*
+		tri.a.amountInUSD = ((tri.a.side == 'buy') ? coins.get(tri.a.coinFrom).price_usd : coins.get(tri.b.coinFrom).price_usd) * tri.a.quantity;
+		tri.b.amountInUSD = ((tri.b.side == 'buy') ? coins.get(tri.b.coinFrom).price_usd : coins.get(tri.c.coinFrom).price_usd) * tri.b.quantity;
+		tri.c.amountInUSD = ((tri.c.side == 'buy') ? coins.get(tri.c.coinFrom).price_usd : coins.get(tri.a.coinFrom).price_usd) * tri.c.quantity;
+		*/
 		
 		//logger.debug(`Triangle after refill quantity and USD Value: ${JSON.stringify(tri)}`);
 		let minAmountInUSD = Math.min(tri.a.amountInUSD, tri.b.amountInUSD, tri.c.amountInUSD);

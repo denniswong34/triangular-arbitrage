@@ -3,7 +3,7 @@ import * as types from './type';
 import { Bitbank } from 'bitbank-handler';
 import { logger, Helper } from './common';
 
-const cmcTickerMap = {};
+const cmcTickerMap: any = {};
 const cmc = new ccxt.coinmarketcap();
 
 export { ccxt };

@@ -37,6 +37,8 @@ export class ApiHandler {
 		a.quantity = (a.side === 'buy') ? orderBookA.asks[0][1] : orderBookA.bids[0][1];
 		b.quantity = (b.side === 'buy') ? orderBookB.asks[0][1] : orderBookB.bids[0][1];
 		c.quantity = (c.side === 'buy') ? orderBookC.asks[0][1] : orderBookC.bids[0][1];
+		
+		logger.debug(`Updated triangle: ${JSON.stringify(triangle)}`);
 	}
   }
 
@@ -67,6 +69,14 @@ export class ApiHandler {
       return;
     }
     return await api.fetchOrder(orderId, symbol);
+  }
+  
+  async queryOrder(exchange: types.IExchange, orderId: string, symbol: string, parameters): Promise<ccxt.Order | undefined> {
+    const api = <ccxt.Exchange>exchange.endpoint.private;
+    if (!api) {
+      return;
+    }
+    return await api.fetchOrder(orderId, symbol, parameters);
   }
 
   async queryOrderStatus(exchange: types.IExchange, orderId: string, symbol: string) {

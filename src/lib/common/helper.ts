@@ -144,10 +144,10 @@ export class Helper {
 		tri.b.amountInUSD = ((tri.b.side === 'buy') ? await  api.getTickerFromCMC(tri.b.coinFrom + "/USD") : await api.getTickerFromCMC(tri.c.coinFrom + "/USD")) * tri.b.quantity;
 		tri.c.amountInUSD = ((tri.c.side === 'buy') ? await  api.getTickerFromCMC(tri.c.coinFrom + "/USD") : await api.getTickerFromCMC(tri.a.coinFrom + "/USD")) * tri.c.quantity;
 		
-		logger.debug(`Triangle after refill quantity and USD Value: ${JSON.stringify(tri)}`);
+		//logger.debug(`Triangle after refill quantity and USD Value: ${JSON.stringify(tri)}`);
 		let minAmountInUSD = Math.min(tri.a.amountInUSD, tri.b.amountInUSD, tri.c.amountInUSD);
 		if(!minAmountInUSD || minAmountInUSD < config.arbitrage.minProfitInUSD) {
-			logger.debug(`Triangle removed due to minAmountInUSD (${minAmountInUSD}) is less than ${config.arbitrage.minProfitInUSD}`);
+			//logger.debug(`Triangle removed due to minAmountInUSD (${minAmountInUSD}) is less than ${config.arbitrage.minProfitInUSD}`);
 			return;
 		}
 			

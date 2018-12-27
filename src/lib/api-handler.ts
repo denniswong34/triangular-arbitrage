@@ -27,7 +27,7 @@ export class ApiHandler {
 
   async getTickerFromCMC(ticker: string) {
       if(!cmcTickerMap[ticker]) {
-          cmcTickerMap.push((await cmc.fetchTicker(ticker)).last);
+          cmcTickerMap[ticker] = (await cmc.fetchTicker(ticker)).last;
       }
       return cmcTickerMap[ticker];
   }

@@ -121,6 +121,7 @@ export class Mocker extends ApiHandler {
     logger.debug(`Free: ${free}`);
     logger.debug(`minAmount: ${minAmount}`);
     const tradeAmount = Helper.getBaseAmountByBC(triangle, free, minAmount);
+    logger.debug(`tradeAmount: ${tradeAmount}`);
 
     // ---------------------- A点开始------------------------
     const tradeEdgeA = this.getMockTradeEdge(exchange.pairs, triangle.a, tradeAmount);

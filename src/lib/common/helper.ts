@@ -141,8 +141,6 @@ export class Helper {
 		//Refill triangle quantity
 		await api.refillTriangleQuantity(exchange, tri);
 		
-		logger.debug("Start cmc get USD function......");
-		
 		let cmc = new ccxt.coinmarketcap();
 		tri.a.amountInUSD = ((tri.a.side == 'buy') ? (await cmc.fetchTicker(tri.a.coinFrom + "/USD")).last : (await cmc.fetchTicker(tri.b.coinFrom + "/USD")).last) * tri.a.quantity;
 		tri.b.amountInUSD = ((tri.b.side == 'buy') ? (await cmc.fetchTicker(tri.b.coinFrom + "/USD")).last : (await cmc.fetchTicker(tri.c.coinFrom + "/USD")).last) * tri.b.quantity;
@@ -167,7 +165,7 @@ export class Helper {
         ranks.push(rank);
       };
 	
-    triangles.reduce(await processTriangle, <any>{},);
+    await triangles.reduce(await processTriangle, <any>{},);
     return ranks;
   }
 

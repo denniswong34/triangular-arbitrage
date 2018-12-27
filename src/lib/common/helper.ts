@@ -6,7 +6,8 @@ import * as bitbank from 'bitbank-handler';
 import {logger} from './logger';
 import { ApiHandler } from '../api-handler';
 
-global.fetch = require('node-fetch');
+const globalAny:any = global;
+globalAny.fetch = require('node-fetch');
 
 const ccxt = require('ccxt');
 const config = require('config');

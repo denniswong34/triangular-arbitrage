@@ -120,6 +120,7 @@ export class Mocker extends ApiHandler {
     // 查找最佳交易量
     logger.debug(`Free: ${free}`);
     logger.debug(`minAmount: ${minAmount}`);
+    logger.debug(`triangle: ${JSON.stringify(triangle)}`);
     const tradeAmount = Helper.getBaseAmountByBC(triangle, free, minAmount);
     logger.debug(`tradeAmount: ${tradeAmount}`);
 

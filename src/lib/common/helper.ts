@@ -121,7 +121,7 @@ export class Helper {
    * 获取排行数据
    * @param triangles 三角套利数组
    */
-  static getRanks(exchange: types.IExchange, triangles: types.ITriangle[]) {
+  static async getRanks(exchange: types.IExchange, triangles: types.ITriangle[]) {
     const ranks: types.IRank[] = [];
 	cc.setApiKey(config.account["cryptoCompare"].apiKey);
 	let api = new ApiHandler();

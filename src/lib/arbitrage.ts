@@ -119,7 +119,7 @@ export class TriangularArbitrage extends Event {
         return;
       }
 
-      const ranks = Helper.getRanks(exchange, candidates);
+      const ranks = await Helper.getRanks(exchange, candidates);
 	  //Remove low USD value candidate
 	  
 	  

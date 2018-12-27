@@ -22,6 +22,8 @@ export interface IEdge {
   price: number;
   // 最佳数量
   quantity: number;
+  
+  amountInUSD: number;
 }
 
 /**

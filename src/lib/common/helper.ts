@@ -126,8 +126,8 @@ export class Helper {
 	cc.setApiKey(config.account["cryptoCompare"].apiKey);
 	let api = new ApiHandler();
 	
-    triangles.reduce(
-      (pre, tri) => {
+    await triangles.reduce(
+      async (pre, tri) => {
         if (tri.rate <= 0) {
           return;
         }

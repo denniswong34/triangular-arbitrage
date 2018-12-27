@@ -5,14 +5,11 @@ import { BigNumber } from 'bignumber.js';
 import * as bitbank from 'bitbank-handler';
 import {logger} from './logger';
 import { ApiHandler } from '../api-handler';
-import CoinMarketCap from 'node-coinmarketcap-extended-api';
 
 const ccxt = require('ccxt');
 const config = require('config');
 const excTime = require('execution-time');
 const binance = require('binance');
-const CMC = new CoinMarketCap();
-
 
 export class Helper {
   static getPrivateKey(exchangeId: types.ExchangeId) {
@@ -145,8 +142,10 @@ export class Helper {
 		await api.refillTriangleQuantity(exchange, tri);
 		
 		logger.debug("Start cmc multi function......");
-		let asset = await CMC.coinFromTicker(tri.a.coinFrom);
-		logger.debug(`asset: ${asset}`);
+		
+		let cmc = new ccxt.coinmarketcap();
+		let ticker = await cmc.fetchTicker(tri.a.coinFrom + "/USD");
+		logger.debug(JSON.stringify(ticker));
 		  
 		/*
 		tri.a.amountInUSD = ((tri.a.side == 'buy') ? coins.get(tri.a.coinFrom).price_usd : coins.get(tri.b.coinFrom).price_usd) * tri.a.quantity;

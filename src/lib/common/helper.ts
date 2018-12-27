@@ -5,9 +5,8 @@ import { BigNumber } from 'bignumber.js';
 import * as bitbank from 'bitbank-handler';
 import {logger} from './logger';
 import { ApiHandler } from '../api-handler';
+import CoinMarketCap from 'node-coinmarketcap-extended-api';
 
-
-const CoinMarketCap = require('node-coinmarketcap-extended-api');
 const ccxt = require('ccxt');
 const config = require('config');
 const excTime = require('execution-time');

@@ -206,12 +206,13 @@ export class Helper {
       return;
     }
     logger.debug(`Symbol: ` + JSON.stringify(symbol));
+
+    const precision = symbol.precision.amount ? symbol.precision.amount : 8;
     return {
       amount: symbol.precision.amount,
       price: symbol.precision.price,
       cost: symbol.limits.cost ? symbol.limits.cost.min :
-          parseFloat(new BigNumber(symbol.info.low * symbol.limits.amount.min)
-              .toFixed(symbol.precision.amount ? symbol.precision.amount : 8)),
+          parseFloat((symbol.info.low * symbol.limits.amount.min).toFixed(precision)),
     };
   }
 

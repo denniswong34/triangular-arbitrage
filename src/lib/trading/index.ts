@@ -66,6 +66,7 @@ export class Trading {
       await this.order.orderA(exchange, testTrade);
     } catch (err) {
       logger.error(`处理订单出错： ${err.message ? err.message : err.msg}`);
+      logger.error(err.stack);
       // 退出交易队列
       // await this.storage.clearQueue(triangle.id, exchange.id);
     }

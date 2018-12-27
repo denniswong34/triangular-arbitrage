@@ -125,7 +125,6 @@ export class Helper {
    */
   static async getRanks(exchange: types.IExchange, triangles: types.ITriangle[]) {
     const ranks: types.IRank[] = [];
-	cc.setApiKey(config.account["cryptoCompare"].apiKey);
 	let api = new ApiHandler();
 	
 	const processTriangle = async (pre: types.ITriangle, tri: types.ITriangle) => {

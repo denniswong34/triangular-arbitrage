@@ -140,11 +140,9 @@ export class Helper {
 		
 		//Refill triangle quantity
 		await api.refillTriangleQuantity(exchange, tri);
-		
-		let cmc = new ccxt.coinmarketcap();
-		tri.a.amountInUSD = ((tri.a.side == 'buy') ? (await cmc.fetchTicker(tri.a.coinFrom + "/USD")).last : (await cmc.fetchTicker(tri.b.coinFrom + "/USD")).last) * tri.a.quantity;
-		tri.b.amountInUSD = ((tri.b.side == 'buy') ? (await cmc.fetchTicker(tri.b.coinFrom + "/USD")).last : (await cmc.fetchTicker(tri.c.coinFrom + "/USD")).last) * tri.b.quantity;
-		tri.c.amountInUSD = ((tri.c.side == 'buy') ? (await cmc.fetchTicker(tri.c.coinFrom + "/USD")).last : (await cmc.fetchTicker(tri.a.coinFrom + "/USD")).last) * tri.c.quantity;
+		tri.a.amountInUSD = ((tri.a.side === 'buy') ? await api.getTickerFromCMC(tri.a.coinFrom + "/USD") : await api.getTickerFromCMC(tri.b.coinFrom + "/USD")) * tri.a.quantity;
+		tri.b.amountInUSD = ((tri.b.side === 'buy') ? (await  api.getTickerFromCMC(tri.b.coinFrom + "/USD") : await api.getTickerFromCMC(tri.c.coinFrom + "/USD")) * tri.b.quantity;
+		tri.c.amountInUSD = ((tri.c.side === 'buy') ? (await  api.getTickerFromCMC(tri.c.coinFrom + "/USD")) : await api.getTickerFromCMC(tri.a.coinFrom + "/USD")) * tri.c.quantity;
 		
 		logger.debug(`Triangle after refill quantity and USD Value: ${JSON.stringify(tri)}`);
 		let minAmountInUSD = Math.min(tri.a.amountInUSD, tri.b.amountInUSD, tri.c.amountInUSD);

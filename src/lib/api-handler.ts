@@ -19,6 +19,26 @@ export class ApiHandler {
         return await api.fetchBalance();
     }
   }
+  
+  async refillTriangleQuantity (exchange: types.IExchange, triangle: Itriangle) {
+	const api = <ccxt.Exchange>exchange.endpoint.private;
+    if (!api) {
+      return;
+    }
+	
+	if(!a.quantity || !b.quantity || c.quantity)
+	{
+		const { a, b, c } = triangle;
+		const {orderBookA, orderBookB, orderBookC} = await Promise.all([
+													api.fetchOrderBook(a.pair, 1),
+													api.fetchOrderBook(b.pair, 1),
+													api.fetchOrderBook(c.pair, 1)]);
+	
+		a.quantity = (a.side === 'buy') ? orderBookA.asks[0][1] : orderBookA.bids[0][1];
+		b.quantity = (b.side === 'buy') ? orderBookB.asks[0][1] : orderBookB.bids[0][1];
+		c.quantity = (c.side === 'buy') ? orderBookC.asks[0][1] : orderBookC.bids[0][1];
+	}
+  }
 
   async getFreeAmount(exchange: types.IExchange, coin: string) {
     const balances = await this.getBalance(exchange);

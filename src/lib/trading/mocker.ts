@@ -121,6 +121,10 @@ export class Mocker extends ApiHandler {
     logger.debug(`Free: ${free}`);
     logger.debug(`minAmount: ${minAmount}`);
     logger.debug(`triangle: ${JSON.stringify(triangle)}`);
+	
+	//refill order ammount if not found in triangle
+	await this.refillTriangleQuantity(exchange, triangle);
+	
     const tradeAmount = Helper.getBaseAmountByBC(triangle, free, minAmount);
     logger.debug(`tradeAmount: ${tradeAmount}`);
 

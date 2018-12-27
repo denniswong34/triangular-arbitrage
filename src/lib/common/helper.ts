@@ -148,13 +148,13 @@ export class Helper {
 		//Refill triangle quantity
 		await api.refillTriangleQuantity(exchange, tri);
 		
-		tri.a.amountInUSD = ((tri.a.side == 'buy') ? await cc.price(tri.a.coinFrom, 'USD') : await cc.price(tri.b.coinFrom, 'USD')) * tri.a.quantity;
-		tri.b.amountInUSD = ((tri.b.side == 'buy') ? await cc.price(tri.b.coinFrom, 'USD') : await cc.price(tri.c.coinFrom, 'USD')) * tri.b.quantity;
-		tri.c.amountInUSD = ((tri.c.side == 'buy') ? await cc.price(tri.c.coinFrom, 'USD') : await cc.price(tri.a.coinFrom, 'USD')) * tri.c.quantity;
+		tri.a.amountInUSD = ((tri.a.side == 'buy') ? await cc.price(tri.a.coinFrom, 'USD').USD : await cc.price(tri.b.coinFrom, 'USD')).USD * tri.a.quantity;
+		tri.b.amountInUSD = ((tri.b.side == 'buy') ? await cc.price(tri.b.coinFrom, 'USD').USD : await cc.price(tri.c.coinFrom, 'USD')).USD * tri.b.quantity;
+		tri.c.amountInUSD = ((tri.c.side == 'buy') ? await cc.price(tri.c.coinFrom, 'USD').USD : await cc.price(tri.a.coinFrom, 'USD')).USD * tri.c.quantity;
 		
 		logger.debug(`Triangle after refill quantity and USD Value: ${JSON.stringify(tri)}`);
 		let minAmountInUSD = Math.min(tri.a.amountInUSD, tri.b.amountInUSD, tri.c.amountInUSD);
-		if(minAmountInUSD < config.arbitrage.minProfitInUSD) {
+		if(!minAmountInUSD || minAmountInUSD < config.arbitrage.minProfitInUSD) {
 			logger.debug(`Triangle removed due to minAmountInUSD (${minAmountInUSD}) is less than ${config.arbitrage.minProfitInUSD}`);
 			return;
 		}

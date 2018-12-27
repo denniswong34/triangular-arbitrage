@@ -38,7 +38,7 @@ export class ApiHandler {
 		b.quantity = (b.side === 'buy') ? orderBookB.asks[0][1] : orderBookB.bids[0][1];
 		c.quantity = (c.side === 'buy') ? orderBookC.asks[0][1] : orderBookC.bids[0][1];
 		
-		logger.debug(`Updated triangle: ${JSON.stringify(triangle)}`);
+		//logger.debug(`Updated triangle: ${JSON.stringify(triangle)}`);
 	}
   }
 

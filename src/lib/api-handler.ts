@@ -20,7 +20,7 @@ export class ApiHandler {
     }
   }
   
-  async refillTriangleQuantity (exchange: types.IExchange, triangle: Itriangle) {
+  async refillTriangleQuantity (exchange: types.IExchange, triangle: types.ITriangle) {
 	const api = <ccxt.Exchange>exchange.endpoint.private;
     if (!api) {
       return;

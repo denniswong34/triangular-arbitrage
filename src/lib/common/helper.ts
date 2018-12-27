@@ -7,7 +7,7 @@ import {logger} from './logger';
 import { ApiHandler } from '../api-handler';
 
 
-const CoinMarketCap = require('coinmarketcap-extended-api');
+const CoinMarketCap = require('node-coinmarketcap-extended-api');
 const ccxt = require('ccxt');
 const config = require('config');
 const excTime = require('execution-time');

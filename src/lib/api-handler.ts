@@ -26,9 +26,9 @@ export class ApiHandler {
       return;
     }
 	
-	if(!a.quantity || !b.quantity || c.quantity)
+	const { a, b, c } = triangle;
+	if(!a.quantity || !b.quantity || !c.quantity)
 	{
-		const { a, b, c } = triangle;
 		const {orderBookA, orderBookB, orderBookC} = await Promise.all([
 													api.fetchOrderBook(a.pair, 1),
 													api.fetchOrderBook(b.pair, 1),

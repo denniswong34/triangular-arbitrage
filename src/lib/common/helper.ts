@@ -15,6 +15,8 @@ const excTime = require('execution-time');
 const binance = require('binance');
 const cc = require('cryptocompare');
 
+const CoinMarketCap = require("node-coinmarketcap");
+const coinmarketcap = new CoinMarketCap();
 
 
 export class Helper {
@@ -148,9 +150,11 @@ export class Helper {
 		//Refill triangle quantity
 		await api.refillTriangleQuantity(exchange, tri);
 		
-		tri.a.amountInUSD = ((tri.a.side == 'buy') ? (await cc.price(tri.a.coinFrom, 'USD')).USD : (await cc.price(tri.b.coinFrom, 'USD')).USD) * tri.a.quantity;
-		tri.b.amountInUSD = ((tri.b.side == 'buy') ? (await cc.price(tri.b.coinFrom, 'USD')).USD : (await cc.price(tri.c.coinFrom, 'USD')).USD) * tri.b.quantity;
-		tri.c.amountInUSD = ((tri.c.side == 'buy') ? (await cc.price(tri.c.coinFrom, 'USD')).USD : (await cc.price(tri.a.coinFrom, 'USD')).USD) * tri.c.quantity;
+		await coinmarketcap.multi(coins => {
+		  tri.a.amountInUSD = ((tri.a.side == 'buy') ? coins.get(tri.a.coinFrom).price_usd : coins.get(tri.b.coinFrom).price_usd) * tri.a.quantity;
+		  tri.b.amountInUSD = ((tri.b.side == 'buy') ? coins.get(tri.b.coinFrom).price_usd : coins.get(tri.c.coinFrom).price_usd) * tri.b.quantity;
+		  tri.c.amountInUSD = ((tri.c.side == 'buy') ? coins.get(tri.c.coinFrom).price_usd : coins.get(tri.a.coinFrom).price_usd) * tri.c.quantity;
+		});
 		
 		logger.debug(`Triangle after refill quantity and USD Value: ${JSON.stringify(tri)}`);
 		let minAmountInUSD = Math.min(tri.a.amountInUSD, tri.b.amountInUSD, tri.c.amountInUSD);

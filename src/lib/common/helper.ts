@@ -10,6 +10,7 @@ const ccxt = require('ccxt');
 const config = require('config');
 const excTime = require('execution-time');
 const binance = require('binance');
+const clc = require('cli-color');
 
 export class Helper {
   static getPrivateKey(exchangeId: types.ExchangeId) {

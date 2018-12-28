@@ -55,10 +55,9 @@ export class Order extends ApiHandler {
             }
         } catch (err) {
             const errMsg = err.message ? err.message : err.msg;
-            logger.error(`订单A出错： ${errMsg}`);
+            logger.error(`queryOrder A 出错： ${errMsg}`);
             return false;
         }
-
 
         logger.info(`查询订单状态： ${orderRes.status}`);
         // 交易成功时
@@ -121,13 +120,20 @@ export class Order extends ApiHandler {
       const nextC = async () => {
         logger.info('执行nextC...');
 
-        //const orderRes = await this.queryOrder(exchange, tradeB.orderId, tradeB.pair);
-        const orderRes = (exchange.id === types.ExchangeId.KuCoin) ?
-							await this.queryOrderForKucoin(exchange, tradeB.orderId, tradeB.pair, tradeB.side.toLowerCase()) : 
-							await this.queryOrder(exchange, tradeB.orderId, tradeB.pair);
-        if (!orderRes) {
-          return false;
-        }
+        //  orderRes = await this.queryOrder(exchange, tradeB.orderId, tradeB.pair);
+          let orderRes: any = {};
+          try{
+              orderRes = (exchange.id === types.ExchangeId.KuCoin) ?
+                  await this.queryOrderForKucoin(exchange, tradeB.orderId, tradeB.pair, tradeB.side.toLowerCase()) :
+                  await this.queryOrder(exchange, tradeB.orderId, tradeB.pair);
+              if (!orderRes) {
+                  return false;
+              }
+          } catch (err) {
+              const errMsg = err.message ? err.message : err.msg;
+              logger.error(`queryOrder B 出错： ${errMsg}`);
+              return false;
+          }
         logger.info(`查询订单状态： ${orderRes.status}`);
         // 交易成功时
         if (orderRes.status === 'closed') {
@@ -189,13 +195,20 @@ export class Order extends ApiHandler {
       }
       const completedC = async () => {
         logger.info('completedC...');
-        //const orderRes = await this.queryOrder(exchange, tradeC.orderId, tradeC.pair);
-        const orderRes = (exchange.id === types.ExchangeId.KuCoin) ?
-							await this.queryOrderForKucoin(exchange, tradeC.orderId, tradeC.pair, tradeC.side.toLowerCase()) : 
-							await this.queryOrder(exchange, tradeC.orderId, tradeC.pair);
-        if (!orderRes) {
-          return false;
-        }
+        // const orderRes = await this.queryOrder(exchange, tradeC.orderId, tradeC.pair);
+          let orderRes: any = {};
+          try{
+              orderRes = (exchange.id === types.ExchangeId.KuCoin) ?
+                  await this.queryOrderForKucoin(exchange, tradeC.orderId, tradeC.pair, tradeC.side.toLowerCase()) :
+                  await this.queryOrder(exchange, tradeC.orderId, tradeC.pair);
+              if (!orderRes) {
+                  return false;
+              }
+          } catch (err) {
+              const errMsg = err.message ? err.message : err.msg;
+              logger.error(`queryOrder B 出错： ${errMsg}`);
+              return false;
+          }
         logger.info(`查询订单状态： ${orderRes.status}`);
         // 交易成功时
         if (orderRes.status === 'closed') {

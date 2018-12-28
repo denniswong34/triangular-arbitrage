@@ -96,7 +96,7 @@ export class Mocker extends ApiHandler {
     // 获取交易精度
     const priceScale = Helper.getPriceScale(exchange.pairs, triangle.a.pair);
     if (!priceScale || !priceScale.cost) {
-      logger.error(`未获取交易精度${tradeTriangle.coin}！！`);
+      logger.error(`未获取交易精度${tradeTriangle.coin}！！ priceScale: ${JSON.stringify(priceScale, null, 2)}`);
       return;
     }
     logger.debug(`获取交易精度${tradeTriangle.coin}: ` + JSON.stringify(priceScale));

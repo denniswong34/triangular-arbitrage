@@ -117,21 +117,19 @@ export class Mocker extends ApiHandler {
      logger.debug(`持有${free + ' ' + triangle.a.coinFrom},小于最低交易数量（${minAmount}）！！`);
       return;
     }
+	
     // 查找最佳交易量
     logger.debug(`Free: ${free}`);
     logger.debug(`minAmount: ${minAmount}`);
     logger.debug(`triangle: ${JSON.stringify(triangle)}`);
 	
-	//refill order ammount if not found in triangle
-	await this.refillTriangleQuantity(exchange, triangle);
-	
     const tradeAmount = Helper.getBaseAmountByBC(triangle, free, minAmount);
-    logger.debug(`tradeAmount: ${tradeAmount}`);
+    logger.info(`Best Trade Amount: ${tradeAmount}`);
 
     // ---------------------- A点Start------------------------
     const tradeEdgeA = this.getMockTradeEdge(exchange.pairs, triangle.a, tradeAmount);
     if (!tradeEdgeA) {
-      logger.debug(`A点Start Failed..`);
+      logger.info(`A点Start Failed..`);
       return;
     }
     tradeTriangle.a = tradeEdgeA;

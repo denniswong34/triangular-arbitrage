@@ -35,7 +35,7 @@ export class Trading {
 
       const limitCheck = await Helper.checkQueueLimit(this.storage.queue)
       if (!limitCheck) {
-        logger.debug(`LimitCheck is not allow...`);
+        logger.debug(`Too many order in queue..`);
         return;
       }
       const testTrade = await this.testOrder(exchange, triangle);

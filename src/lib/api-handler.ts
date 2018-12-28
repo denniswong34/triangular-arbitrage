@@ -124,6 +124,9 @@ export class ApiHandler {
     if (!api) {
       return;
     }
+
+    logger.info(`queryOrder(${orderId}, ${symbol})`);
+    logger.info(`Exchange: ${JSON.stringify(exchange)}`);
     return await api.fetchOrder(orderId, symbol);
   }
 
@@ -132,6 +135,7 @@ export class ApiHandler {
     if (!api) {
       return;
     }
+      logger.info(`queryOrderForKucoin(${orderId}, ${symbol})`);
     return await api.fetchOrder(orderId, symbol, { type: (side === 'buy' ? 'BUY' : 'SELL') });
   }
 

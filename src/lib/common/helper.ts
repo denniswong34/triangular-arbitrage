@@ -125,9 +125,11 @@ export class Helper {
     const ranks: types.IRank[] = [];
 	let api = new ApiHandler();
 	
-	const processTriangle = async (pre: types.ITriangle, tri: types.ITriangle) => {
-        if (tri.rate <= 0) {
-          return;
+	for (i = 0; i < triangles.length; i++) {
+		const tri:ITriangle = triangle[i];
+		
+		if (tri.rate <= 0) {
+          continue;
         }
         const rate = new BigNumber(tri.rate);
         let fee = [0, 0];
@@ -139,7 +141,7 @@ export class Helper {
         const profitRate = [rate.minus(fee[0]), rate.minus(fee[1])];
         if (profitRate[0].isLessThan(config.arbitrage.minRateProfit)) {
 			logger.info(`Remove 路径(ProfitRate Too Less) ：${clc.cyanBright(tri.id)} 利率: ${clcRate}`);
-          return;
+			continue;
         }
 		
 		//Refill triangle quantity
@@ -154,9 +156,8 @@ export class Helper {
 		
 		if(!minAmountInUSD || minAmountInUSD < config.arbitrage.minProfitInUSD) {
 			//logger.debug(`Triangle removed due to minAmountInUSD (${minAmountInUSD}) is less than ${config.arbitrage.minProfitInUSD}`);
-			
 			logger.info(`Remove 路径(USD Too Less) ：${clc.cyanBright(tri.id)} 利率: ${clcRate} minAmountInUSD: (${minAmountInUSD})`);
-			return;
+			continue;
 		}
 			
         const rank: types.IRank = {
@@ -171,10 +172,8 @@ export class Helper {
         };
         ranks.push(rank);
 		logger.info(`PUSH 路径 to Ranks  ：${clc.greenBright(tri.id)} 利率: ${clcRate} minAmountInUSD: (${minAmountInUSD})`);
-      };
-    await triangles.reduce(await processTriangle, <any>{},);
+	}
 	logger.info(`Ranks size after reduce: ${ranks.length}`);
-	
     return ranks;
   }
 

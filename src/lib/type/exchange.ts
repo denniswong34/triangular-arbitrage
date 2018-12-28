@@ -33,7 +33,7 @@ export enum ExchangeId {
   Bitbank = 'bitbank',
   Bittrex = 'bittrex',
   Cryptopia = 'cryptopia',
-  Hitbtc = 'hitbtc2',
+  Hitbtc = 'hitbtc',
   Cobinhood = 'cobinhood',
   Livecoin = 'livecoin',
   Okex = 'okex',

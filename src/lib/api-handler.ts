@@ -6,10 +6,18 @@ import { logger, Helper } from './common';
 const cmcTickerMap: any = {};
 const cmc = new ccxt.coinmarketcap();
 
+let createOrderFailCount : number = 0;
+
 export { ccxt };
 export class ApiHandler {
 
-
+  async getTickerFromCMC(ticker: string) {
+      if(!cmcTickerMap[ticker]) {
+          cmcTickerMap[ticker] = (await cmc.fetchTicker(ticker)).last;
+      }
+      return cmcTickerMap[ticker];
+  }
+  
   async getBalance(exchange: types.IExchange): Promise<types.IBalances | undefined> {
     const api = exchange.endpoint.private;
     if (!api) {
@@ -23,13 +31,6 @@ export class ApiHandler {
       default:
         return await api.fetchBalance();
     }
-  }
-
-  async getTickerFromCMC(ticker: string) {
-      if(!cmcTickerMap[ticker]) {
-          cmcTickerMap[ticker] = (await cmc.fetchTicker(ticker)).last;
-      }
-      return cmcTickerMap[ticker];
   }
 
   async refillTriangleQuantity (exchange: types.IExchange, triangle: types.ITriangle) {
@@ -57,12 +58,12 @@ export class ApiHandler {
   async getFreeAmount(exchange: types.IExchange, coin: string) {
     const balances = await this.getBalance(exchange);
     if (!balances) {
-      return;
+      return 0;
     }
     const asset = balances[coin];
     if (!asset) {
       logger.debug(`未查找到持有${coin}！！`);
-      return;
+      return 0;
     }
     return asset.free;
   }
@@ -72,6 +73,39 @@ export class ApiHandler {
     if (!api) {
       return;
     }
+	
+	//Check if there is enough balance
+	let pairs : string[] = [];
+	
+	pairs = order.symbol.split("/");
+	if(order.side === "buy")
+	{
+		let freeAmount = 0;
+		freeAmount = await this.getFreeAmount(exchange, pairs[1]);
+		if(createOrderFailCount <= 5 && freeAmount < order.amount * order.price)
+		{
+			createOrderFailCount++;
+			return await this.createOrder(exchange, order);
+		} else {
+			createOrderFailCount = 0;
+			logger.info(`Balance ${freeAmount} not enough for createOrder: ${order}`);
+			return;
+		}
+	} else {
+		let freeAmount = 0;
+		freeAmount = await this.getFreeAmount(exchange, pairs[0]);
+		if(createOrderFailCount <= 5 && freeAmount < order.amount)
+		{
+			createOrderFailCount++;
+			return await this.createOrder(exchange, order);
+		} else {
+			createOrderFailCount = 0;
+			logger.info(`Balance ${freeAmount} not enough for createOrder: ${order}`);
+			return;
+		}
+	}
+	
+	createOrderFailCount = 0;
     return await api.createOrder(order.symbol, order.type, order.side, order.amount, order.price);
   }
 

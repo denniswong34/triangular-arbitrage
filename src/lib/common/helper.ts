@@ -11,7 +11,7 @@ const config = require('config');
 const excTime = require('execution-time');
 const binance = require('binance');
 const clc = require('cli-color');
-const exchangeTickerBlackList = {'hitbtc2': ['BCH']};
+const exchangeTickerBlackList: any = {'hitbtc2': ['BCH']};
 
 export class Helper {
   static getPrivateKey(exchangeId: types.ExchangeId) {
@@ -145,7 +145,7 @@ export class Helper {
 			continue;
         }
 
-        if(exchangeTickerBlackList[exchange.id].indexOf(tri.a.coinFrom) !== -1 ||
+        if(exchangeTickerBlackList[exchange.id] && exchangeTickerBlackList[exchange.id].indexOf(tri.a.coinFrom) !== -1 ||
             exchangeTickerBlackList[exchange.id].indexOf(tri.b.coinFrom) !== -1 ||
             exchangeTickerBlackList[exchange.id].indexOf(tri.c.coinFrom) !== -1
         ) {

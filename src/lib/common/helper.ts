@@ -134,8 +134,11 @@ export class Helper {
         if (exchange.id === types.ExchangeId.Binance) {
           fee = [rate.times(0.1).toNumber(), rate.times(0.05).toNumber()];
         }
+		
+		const clcRate = tri.rate < 0 ? clc.redBright(tri.rate) : clc.greenBright(tri.rate);
         const profitRate = [rate.minus(fee[0]), rate.minus(fee[1])];
         if (profitRate[0].isLessThan(config.arbitrage.minRateProfit)) {
+			logger.info(`Remove 路径(ProfitRate Too Less) ：${clc.cyanBright(tri.id)} 利率: ${clcRate}`);
           return;
         }
 		
@@ -151,8 +154,8 @@ export class Helper {
 		
 		if(!minAmountInUSD || minAmountInUSD < config.arbitrage.minProfitInUSD) {
 			//logger.debug(`Triangle removed due to minAmountInUSD (${minAmountInUSD}) is less than ${config.arbitrage.minProfitInUSD}`);
-			const clcRate = tri.rate < 0 ? clc.redBright(tri.rate) : clc.greenBright(tri.rate);
-			logger.info(`Remove路径：${clc.cyanBright(tri.id)} 利率: ${clcRate} minAmountInUSD: (${minAmountInUSD})`);
+			
+			logger.info(`Remove 路径(USD Too Less) ：${clc.cyanBright(tri.id)} 利率: ${clcRate} minAmountInUSD: (${minAmountInUSD})`);
 			return;
 		}
 			

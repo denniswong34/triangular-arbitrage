@@ -36,14 +36,16 @@ export class TriangularArbitrage extends Event {
       // 初始化交易所
       await this.initExchange(this.activeExchangeId);
       if (types.ExchangeId.Binance === this.activeExchangeId) {
+		logger.info('----- Estimate (Binance) is called -----');
         const exchange = this.exchanges.get(this.activeExchangeId);
         if (!exchange) {
           return;
         }
         exchange.endpoint.ws.onAllTickers(this.estimate.bind(this));
       } else {
-		await this.estimate.bind(this)
-		//clearInterval(this.worker);
+		logger.info('----- Estimate (Other) is called -----');
+		this.destroy();
+		await this.estimate.bind(this)	
         //this.worker = setInterval(this.estimate.bind(this), config.arbitrage.interval * 1000);
       }
 

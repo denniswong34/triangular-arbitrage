@@ -47,6 +47,11 @@ export class ApiHandler {
             api.fetchOrderBook(b.pair, 1),
             api.fetchOrderBook(c.pair, 1)]);
 
+        if ( ! orderBookA.asks[0] || ! orderBookA.bids[0] || ! orderBookB.asks[0] ||
+            ! orderBookB.bids[0] || ! orderBookC.asks[0] || ! orderBookC.bids[0] ) {
+            return;
+        }
+
         a.quantity = (a.side === 'buy') ? orderBookA.asks[0][1] : orderBookA.bids[0][1];
         b.quantity = (b.side === 'buy') ? orderBookB.asks[0][1] : orderBookB.bids[0][1];
         c.quantity = (c.side === 'buy') ? orderBookC.asks[0][1] : orderBookC.bids[0][1];

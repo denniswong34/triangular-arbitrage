@@ -43,10 +43,11 @@ export class Mocker extends ApiHandler {
       return;
     }
     // 查询交易对手续费
-    const feeRate = pairs[edge.pair].maker;
+    let feeRate = pairs[edge.pair].maker;
     if (!feeRate || feeRate <= 0) {
       logger.error(`未取得交易对的手续费！！`);
-      return;
+      feeRate = pairs[edge.pair].taker;
+      //return;
     }
     tradeEdge.amount = +amount.toFixed(priceScale.amount, 1);
     tradeEdge.price = edge.price;

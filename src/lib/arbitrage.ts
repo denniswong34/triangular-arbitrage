@@ -120,7 +120,7 @@ export class TriangularArbitrage extends Event {
       }
 	  
 	  logger.info("Before get rank called, below is the list of ranks:");
-	  const output1 = candidates.length > 5 ? candidates.slice(0, 5) : ranks.slice(0, candidates.length);
+	  const output1 = candidates.length > 5 ? candidates.slice(0, 5) : candidates.slice(0, candidates.length);
       for (const candidate of output1) {
         const clcRate = candidate.rate < 0 ? clc.redBright(candidate.rate) : clc.greenBright(candidate.rate);
         const path = candidate.id.length < 15 ? candidate.id + ' '.repeat(15 - candidate.id.length) : candidate.id;

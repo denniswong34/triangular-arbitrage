@@ -261,7 +261,7 @@ export class Helper {
   static getBaseAmountByBC(triangle: types.ITriangle, freeAmount: BigNumber, minAmount: BigNumber) {
     const { a, b, c } = triangle;
 	
-	const aAmount = Helper.convertAmount(a.price, a.quantity, a.side);
+	const aAmount = a.quantity;
 	logger.info(`A点的数量: ${aAmount}`);
 	
     // B点的数量

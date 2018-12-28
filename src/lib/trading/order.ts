@@ -34,7 +34,7 @@ export class Order extends ApiHandler {
         if (!orderInfo) {
           return;
         }
-        logger.debug(`下单返回值: ${JSON.stringify(orderInfo, null, 2)}`);
+        logger.info(`下单返回值: ${JSON.stringify(orderInfo, null, 2)}`);
 
         testTrade.a.status = orderInfo.status;
         testTrade.a.orderId = orderInfo.id;
@@ -101,7 +101,7 @@ export class Order extends ApiHandler {
         if (!orderInfo) {
           return;
         }
-        logger.debug(`下单返回值: ${JSON.stringify(orderInfo, null, 2)}`);
+        logger.info(`下单返回值: ${JSON.stringify(orderInfo, null, 2)}`);
 
         trade.b.status = <any>orderInfo.status;
         trade.b.orderId = orderInfo.id;
@@ -157,7 +157,7 @@ export class Order extends ApiHandler {
         logger.info(`第三步：${clc.blueBright(trade.c.pair)}`);
         logger.info(`限价：${tradeC.price}, 数量：${tradeC.amount}, 方向：${tradeC.side}`);
         if (tradeC.side.toLowerCase() === 'sell' && tradeC.amount > trade.b.amount) {
-          tradeC.amount = trade.b.amount;
+          tradeC.amount = trade.b.amount * 0.95;
         }
         const order = <types.IOrder>{
           symbol: tradeC.pair,
@@ -170,7 +170,7 @@ export class Order extends ApiHandler {
         if (!orderInfo) {
           return;
         }
-        logger.debug(`下单返回值: ${JSON.stringify(orderInfo, null, 2)}`);
+        logger.info(`下单返回值: ${JSON.stringify(orderInfo, null, 2)}`);
 
         trade.c.status = orderInfo.status;
         trade.c.orderId = orderInfo.id;

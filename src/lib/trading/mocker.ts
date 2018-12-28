@@ -70,7 +70,7 @@ export class Mocker extends ApiHandler {
     // 查询资产
     const balances = await this.getBalance(exchange);
     if (!balances) {
-      logger.debug('未查找到持有资产！！');
+      logger.error('未查找到持有资产！！');
       return;
     }
     logger.debug('持有资产 PASS!!');
@@ -82,13 +82,13 @@ export class Mocker extends ApiHandler {
 
     const asset = balances[tradeTriangle.coin];
     if (!asset) {
-      logger.debug(`未查找到持有${tradeTriangle.coin}！！`);
+      logger.error(`未查找到持有${tradeTriangle.coin}！！`);
       return;
     }
     logger.debug(`持有资产 ${tradeTriangle.coin} PASS: ` + JSON.stringify(asset));
     const free = new BigNumber(asset.free);
     if (free.isZero()) {
-      logger.debug(`未查找到持有${tradeTriangle.coin}！！`);
+      logger.error(`未查找到持有${tradeTriangle.coin}！！`);
       return;
     }
     logger.debug(`持有 ${tradeTriangle.coin} PASS!!`);
@@ -96,7 +96,7 @@ export class Mocker extends ApiHandler {
     // 获取交易精度
     const priceScale = Helper.getPriceScale(exchange.pairs, triangle.a.pair);
     if (!priceScale || !priceScale.cost) {
-      logger.debug(`未获取交易精度${tradeTriangle.coin}！！`);
+      logger.error(`未获取交易精度${tradeTriangle.coin}！！`);
       return;
     }
     logger.debug(`获取交易精度${tradeTriangle.coin}: ` + JSON.stringify(priceScale));
@@ -114,7 +114,7 @@ export class Mocker extends ApiHandler {
     }
 
     if (triangle.a.side === 'sell' && free.isLessThanOrEqualTo(minAmount)) {
-     logger.debug(`持有${free + ' ' + triangle.a.coinFrom},小于最低交易数量（${minAmount}）！！`);
+     logger.error(`持有${free + ' ' + triangle.a.coinFrom},小于最低交易数量（${minAmount}）！！`);
       return;
     }
 	
@@ -154,7 +154,7 @@ export class Mocker extends ApiHandler {
     });
     const tradeEdgeB = this.getMockTradeEdge(exchange.pairs, triangle.b, bAmount);
     if (!tradeEdgeB) {
-      logger.debug(`B点Start Failed..`);
+      logger.info(`B点Start Failed..`);
       return;
     }
     tradeTriangle.b = tradeEdgeB;

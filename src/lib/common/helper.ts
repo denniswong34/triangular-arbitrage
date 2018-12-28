@@ -151,6 +151,7 @@ export class Helper {
 		
 		if(!minAmountInUSD || minAmountInUSD < config.arbitrage.minProfitInUSD) {
 			//logger.debug(`Triangle removed due to minAmountInUSD (${minAmountInUSD}) is less than ${config.arbitrage.minProfitInUSD}`);
+			const clcRate = tri.rate < 0 ? clc.redBright(tri.rate) : clc.greenBright(tri.rate);
 			logger.info(`Remove路径：${clc.cyanBright(tri.id)} 利率: ${clcRate} minAmountInUSD: (${minAmountInUSD})`);
 			return;
 		}

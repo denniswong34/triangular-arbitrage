@@ -44,7 +44,7 @@ export class Order extends ApiHandler {
       }
       const nextB = async () => {
         logger.info('执行nextB...');
-        const orderRes = (exchange.id == 'kucoin') ? 
+        const orderRes = (exchange.id === types.ExchangeId.KuCoin) ?
 							await this.queryOrderForKucoin(exchange, testTrade.a.orderId, testTrade.a.pair, testTrade.a.side.toLowerCase()) : 
 							await this.queryOrder(exchange, testTrade.a.orderId, testTrade.a.pair);
         if (!orderRes) {
@@ -112,7 +112,7 @@ export class Order extends ApiHandler {
         logger.info('执行nextC...');
 
         //const orderRes = await this.queryOrder(exchange, tradeB.orderId, tradeB.pair);
-		const orderRes = (exchange.id == 'kucoin') ? 
+        const orderRes = (exchange.id === types.ExchangeId.KuCoin) ?
 							await this.queryOrderForKucoin(exchange, tradeB.orderId, tradeB.pair, tradeB.side.toLowerCase()) : 
 							await this.queryOrder(exchange, tradeB.orderId, tradeB.pair);
         if (!orderRes) {
@@ -180,7 +180,7 @@ export class Order extends ApiHandler {
       const completedC = async () => {
         logger.info('completedC...');
         //const orderRes = await this.queryOrder(exchange, tradeC.orderId, tradeC.pair);
-		const orderRes = (exchange.id == 'kucoin') ? 
+        const orderRes = (exchange.id === types.ExchangeId.KuCoin) ?
 							await this.queryOrderForKucoin(exchange, tradeC.orderId, tradeC.pair, tradeC.side.toLowerCase()) : 
 							await this.queryOrder(exchange, tradeC.orderId, tradeC.pair);
         if (!orderRes) {

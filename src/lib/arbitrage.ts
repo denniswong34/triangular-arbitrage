@@ -42,7 +42,9 @@ export class TriangularArbitrage extends Event {
         }
         exchange.endpoint.ws.onAllTickers(this.estimate.bind(this));
       } else {
-        this.worker = setInterval(this.estimate.bind(this), config.arbitrage.interval * 1000);
+		this.estimate.bind(this)
+		//clearInterval(this.worker);
+        //this.worker = setInterval(this.estimate.bind(this), config.arbitrage.interval * 1000);
       }
 
       logger.info('----- 机器人启动完成 -----');

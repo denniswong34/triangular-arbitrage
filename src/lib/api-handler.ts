@@ -129,10 +129,15 @@ export class ApiHandler {
     if (!api) {
       return;
     }
-
-    logger.info(`queryOrder(${orderId}, ${symbol})`);
-    logger.info(`Exchange: ${JSON.stringify(exchange.id)}`);
-    return await api.fetchOrder(orderId, symbol);
+    try {
+        logger.info(`queryOrder(${orderId}, ${symbol})`);
+        logger.info(`Exchange: ${JSON.stringify(exchange.id)}`);
+        return await api.fetchOrder(orderId, symbol);
+    } catch (err) {
+        logger.error(`queryOrder exception: ` + err.message);
+        logger.error(err.stack);
+        return;
+    }
   }
 
   async queryOrderForKucoin(exchange: types.IExchange, orderId: string, symbol: string, side: string): Promise<ccxt.Order | undefined> {

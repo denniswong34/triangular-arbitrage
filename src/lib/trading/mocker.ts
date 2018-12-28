@@ -40,7 +40,7 @@ export class Mocker extends ApiHandler {
     const fmAmount = new BigNumber(amount.toFixed(precision, 1));
     if (fmAmount.isZero()) {
       logger.error(`格式化购买数量后结果为0！！`);
-      return;
+      //return;
     }
     // 查询交易对手续费
     let feeRate = pairs[edge.pair].maker;

@@ -280,7 +280,10 @@ export class Helper {
 	logger.info(`c点数量: ${c2aAmount}`);
 
     // 选取数量最大的
-	const minAvailableAmount = Math.min(aAmount, b2aAmount, c2aAmount, freeAmount);
+	const amountList = [aAmount, b2aAmount, c2aAmount, freeAmount];
+	amountList.sort(function(a, b){return a.minus(b).toNumber()});
+	
+	const minAvailableAmount = amountList[0];
 	logger.info(`选取数量最小的: ${minAvailableAmount}`);
 	logger.info(`minAmount: ${minAmount}`);
 	logger.info(`freeAmount: ${freeAmount}`);

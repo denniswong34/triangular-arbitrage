@@ -260,9 +260,8 @@ export class Helper {
    */
   static getBaseAmountByBC(triangle: types.ITriangle, freeAmount: BigNumber, minAmount: BigNumber) {
     const { a, b, c } = triangle;
-	
-	BigNumber.config({ ERRORS: false });
-	const aAmount = (a.side == "sell") ? new BigNumber(a.quantity) : new BigNumber(a.quantity * a.price);
+
+	const aAmount = (a.side == "sell") ? new BigNumber(a.quantity) : new BigNumber((a.quantity * a.price).toFixed(8));
 	logger.info(`A点的数量: ${aAmount} ${a.coinFrom}`);
 	
     // B点的数量

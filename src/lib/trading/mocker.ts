@@ -29,7 +29,7 @@ export class Mocker extends ApiHandler {
     // 获取交易精度
     const priceScale = Helper.getPriceScale(pairs, edge.pair);
     if (!priceScale) {
-      logger.debug(`未取得交易精度！！`);
+      logger.error(`未取得交易精度！！`);
       return;
     }
     logger.debug(`priceScale: ${JSON.stringify(priceScale)}`);
@@ -39,13 +39,13 @@ export class Mocker extends ApiHandler {
     // 格式化购买数量(多余小数位舍弃)
     const fmAmount = new BigNumber(amount.toFixed(precision, 1));
     if (fmAmount.isZero()) {
-      logger.debug(`格式化购买数量后结果为0！！`);
+      logger.error(`格式化购买数量后结果为0！！`);
       return;
     }
     // 查询交易对手续费
     const feeRate = pairs[edge.pair].maker;
     if (!feeRate || feeRate <= 0) {
-      logger.debug(`未取得交易对的手续费！！`);
+      logger.error(`未取得交易对的手续费！！`);
       return;
     }
     tradeEdge.amount = +amount.toFixed(priceScale.amount, 1);

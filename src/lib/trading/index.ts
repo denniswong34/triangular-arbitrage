@@ -50,8 +50,8 @@ export class Trading {
         return;
       }
 
-      logger.info('----- 套利开始 -----');
-      logger.info(`路径：${clc.cyanBright(triangle.id)} 利率: ${triangle.rate}`);
+      logger.info('----- 套利Start -----');
+      logger.info(`Path：${clc.cyanBright(triangle.id)} Rate: ${triangle.rate}`);
 
       // 放入交易队列
       const queueId = await this.storage.openTradingSession({

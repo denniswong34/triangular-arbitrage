@@ -94,7 +94,7 @@ export class Engine {
       if (aCoinToSet[bPairMarket.base]) {
         const stepC = this.getEdge(tickers, bPairMarket.base, abc.a);
 
-        // 匹配到路径C
+        // 匹配到PathC
         if (stepC) {
           abc.c = stepC.coinFrom;
 
@@ -121,10 +121,10 @@ export class Engine {
       return;
     }
     const timer = Helper.getTimer();
-    logger.debug('getCandidates:获取全市场候选者[开始]');
+    logger.debug('getCandidates:获取全市场候选者[Start]');
     for (const [index, marketPair] of marketPairs.entries()) {
       const paths = marketPairs.slice(0);
-      // 删除起始路径
+      // 删除起始Path
       paths.splice(index, 1);
 
       for (const path of paths) {
@@ -145,7 +145,7 @@ export class Engine {
       candidates = candidates.slice(0, config.display.maxRows);
     }
 
-    logger.debug(`getCandidates:获取全市场候选者[终了] ${Helper.endTimer(timer)}`);
+    logger.debug(`getCandidates:获取全市场候选者[End] ${Helper.endTimer(timer)}`);
     return candidates;
   }
 }

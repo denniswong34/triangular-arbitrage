@@ -27,7 +27,7 @@ export class TriangularArbitrage extends Event {
 
   async start(activeExchangeId?: types.ExchangeId) {
     const timer = Helper.getTimer();
-    logger.debug('启动三角套利机器人[开始]');
+    logger.debug('启动三角套利机器人[Start]');
     if (activeExchangeId) {
       this.activeExchangeId = activeExchangeId;
     }
@@ -49,7 +49,7 @@ export class TriangularArbitrage extends Event {
     } catch (err) {
       logger.error(`机器人运行出错(${Helper.endTimer(timer)}): ${err}`);
     }
-    logger.debug(`启动三角套利机器人[终了] ${Helper.endTimer(timer)}`);
+    logger.debug(`启动三角套利机器人[End] ${Helper.endTimer(timer)}`);
   }
 
   destroy() {
@@ -93,18 +93,18 @@ export class TriangularArbitrage extends Event {
         }
       }
       this.exchanges.set(exchangeId, exchange);
-      logger.debug(`初始化交易所[终了] ${Helper.endTimer(timer)}`);
+      logger.debug(`初始化交易所[End] ${Helper.endTimer(timer)}`);
     } catch (err) {
-      logger.error(`初始化交易所[异常](${Helper.endTimer(timer)}): ${err}`);
+      logger.error(`初始化交易所[Exception](${Helper.endTimer(timer)}): ${err}`);
     }
   }
 
-  // 套利测算
+  // Arbitraging Estimate
   async estimate(tickers?: types.Binance24HrTicker[]) {
     const timer = Helper.getTimer();
-    logger.debug('监视行情[开始]');
+    logger.debug('Monitoring[Start]');
     try {
-      logger.info(clc.magentaBright('----- 套利测算 -----'));
+      logger.info(clc.magentaBright('----- Arbitraging Estimate -----'));
       const exchange = this.exchanges.get(this.activeExchangeId);
       if (!exchange) {
         return;
@@ -124,7 +124,7 @@ export class TriangularArbitrage extends Event {
       for (const candidate of output1) {
         const clcRate = candidate.rate < 0 ? clc.redBright(candidate.rate) : clc.greenBright(candidate.rate);
         const path = candidate.id.length < 15 ? candidate.id + ' '.repeat(15 - candidate.id.length) : candidate.id;
-        logger.info(`路径：${clc.cyanBright(path)} 利率: ${clcRate}`);
+        logger.info(`Path：${clc.cyanBright(path)} Rate: ${clcRate}`);
       }
 
 	  //Remove low USD value candidate
@@ -134,7 +134,7 @@ export class TriangularArbitrage extends Event {
       for (const rank of output2) {
         const clcRate = rank.triangle.rate < 0 ? clc.redBright(rank.triangle.rate) : clc.greenBright(rank.triangle.rate);
         const path = rank.triangle.id.length < 15 ? rank.triangle.id + ' '.repeat(15 - rank.triangle.id.length) : rank.triangle.id;
-        logger.info(`路径：${clc.cyanBright(path)} 利率: ${clcRate} Amount(USD): ${rank.triangle.minAmountInUSD}`);
+        logger.info(`Path：${clc.cyanBright(path)} Rate: ${clcRate} Amount(USD): ${rank.triangle.minAmountInUSD}`);
       }
 	  
       if (config.storage.tickRank && ranks.length > 0) {
@@ -143,7 +143,7 @@ export class TriangularArbitrage extends Event {
       }
       // 更新套利数据
       if (ranks[0]) {
-        logger.info(`选出套利组合第1名：${ranks[0].triangle.id}, 预测利率(扣除手续费): ${ranks[0].profitRate[0]}`);
+        logger.info(`选出套利组合第1名：${ranks[0].triangle.id}, Estimate Rate(Minus Trading Fee): ${ranks[0].profitRate[0]}`);
         // 执行三角套利
         this.emit('placeOrder', exchange, ranks[0].triangle);
       } else {
@@ -151,10 +151,10 @@ export class TriangularArbitrage extends Event {
       }
 
       
-      logger.debug(`监视行情[终了] ${Helper.endTimer(timer)}`);
+      logger.debug(`Monitoring[End] ${Helper.endTimer(timer)}`);
     } catch (err) {
-      logger.error(`监视行情[异常](${Helper.endTimer(timer)}): ${JSON.stringify(err)}`);
-        logger.error(`监视行情[异常](${Helper.endTimer(timer)}): ` + err.stack);
+      logger.error(`Monitoring[Exception](${Helper.endTimer(timer)}): ${JSON.stringify(err)}`);
+        logger.error(`Monitoring[Exception](${Helper.endTimer(timer)}): ` + err.stack);
     }
   }
 }

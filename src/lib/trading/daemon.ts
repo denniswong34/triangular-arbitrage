@@ -23,7 +23,7 @@ export class Daemon {
   // 重启套利流程
   private async reboot(exchange: types.IExchange, trade: types.ITradeTriangle, queue: types.IQueue) {
     logger.info('----- 继续前次套利 -----');
-    logger.info(`路径：${clc.cyanBright(trade.id)} 利率: ${trade.rate}`);
+    logger.info(`Path：${clc.cyanBright(trade.id)} Rate: ${trade.rate}`);
     // 第一步
     if (queue.step === 0) {
       if (!trade.a.orderId) {

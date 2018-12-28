@@ -35,7 +35,7 @@ export interface ITriangle {
   a: IEdge;
   b: IEdge;
   c: IEdge;
-  // 利率
+  // Rate
   rate: number;
   // 时间戳
   ts: number;

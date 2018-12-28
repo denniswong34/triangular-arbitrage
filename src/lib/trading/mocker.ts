@@ -128,16 +128,16 @@ export class Mocker extends ApiHandler {
     const tradeAmount = Helper.getBaseAmountByBC(triangle, free, minAmount);
     logger.debug(`tradeAmount: ${tradeAmount}`);
 
-    // ---------------------- A点开始------------------------
+    // ---------------------- A点Start------------------------
     const tradeEdgeA = this.getMockTradeEdge(exchange.pairs, triangle.a, tradeAmount);
     if (!tradeEdgeA) {
-      logger.debug(`A点开始 Failed..`);
+      logger.debug(`A点Start Failed..`);
       return;
     }
     tradeTriangle.a = tradeEdgeA;
     tradeTriangle.before = tradeEdgeA.amount;
 
-    // ---------------------- B点开始------------------------
+    // ---------------------- B点Start------------------------
     let aAmount = tradeEdgeA.amount;
     if (tradeEdgeA.side === 'sell') {
       tradeTriangle.before = tradeEdgeA.amount;
@@ -156,12 +156,12 @@ export class Mocker extends ApiHandler {
     });
     const tradeEdgeB = this.getMockTradeEdge(exchange.pairs, triangle.b, bAmount);
     if (!tradeEdgeB) {
-      logger.debug(`B点开始 Failed..`);
+      logger.debug(`B点Start Failed..`);
       return;
     }
     tradeTriangle.b = tradeEdgeB;
 
-    // ---------------------- C点开始------------------------
+    // ---------------------- C点Start------------------------
     let cAmount = bAmount;
     if (triangle.c.side === 'buy') {
       cAmount = Helper.getConvertedAmount({
@@ -172,7 +172,7 @@ export class Mocker extends ApiHandler {
     }
     const tradeEdgeC = this.getMockTradeEdge(exchange.pairs, triangle.c, cAmount);
     if (!tradeEdgeC) {
-      logger.debug(`C点开始 Failed..`);
+      logger.debug(`C点Start Failed..`);
       return;
     }
     tradeTriangle.c = tradeEdgeC;
@@ -193,7 +193,7 @@ export class Mocker extends ApiHandler {
       return tradeTriangle;
     }
     tradeTriangle.id = triangle.id;
-    // 利率
+    // Rate
     tradeTriangle.rate =
       profit
         .div(tradeTriangle.before)
@@ -203,7 +203,7 @@ export class Mocker extends ApiHandler {
     logger.info(clc.yellowBright('----- 模拟交易结果 -----'));
     logger.info(`套利货币：${tradeTriangle.coin}`);
     logger.info(`套利前资产：${tradeTriangle.before}, 套利后资产：${tradeTriangle.after}`);
-    logger.info(`利润：${clc.greenBright(tradeTriangle.profit)}, 利率：${clc.greenBright(tradeTriangle.rate)}`);
+    logger.info(`利润：${clc.greenBright(tradeTriangle.profit)}, Rate：${clc.greenBright(tradeTriangle.rate)}`);
     return tradeTriangle;
   }
 }

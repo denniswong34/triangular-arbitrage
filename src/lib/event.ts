@@ -18,7 +18,7 @@ export class Event extends EventEmitter {
 
   async onPlaceOrder(exchange: types.IExchange, triangle: types.ITriangle) {
     const timer = Helper.getTimer();
-    logger.debug('执行订单事件[开始]');
+    logger.debug('执行订单事件[Start]');
     await this.trading.placeOrder(exchange, triangle);
   }
 

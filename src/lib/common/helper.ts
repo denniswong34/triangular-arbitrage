@@ -125,8 +125,8 @@ export class Helper {
     const ranks: types.IRank[] = [];
 	let api = new ApiHandler();
 	
-	for (i = 0; i < triangles.length; i++) {
-		const tri:ITriangle = triangle[i];
+	for (let i = 0; i < triangles.length; i++) {
+		const tri : types.ITriangle = triangles[i];
 		
 		if (tri.rate <= 0) {
           continue;
@@ -140,7 +140,7 @@ export class Helper {
 		const clcRate = tri.rate < 0 ? clc.redBright(tri.rate) : clc.greenBright(tri.rate);
         const profitRate = [rate.minus(fee[0]), rate.minus(fee[1])];
         if (profitRate[0].isLessThan(config.arbitrage.minRateProfit)) {
-			logger.info(`Remove 路径(ProfitRate Too Less) ：${clc.cyanBright(tri.id)} 利率: ${clcRate}`);
+			logger.info(`Remove Path(ProfitRate Too Less) ：${clc.cyanBright(tri.id)} Rate: ${clcRate}`);
 			continue;
         }
 		
@@ -156,7 +156,7 @@ export class Helper {
 		
 		if(!minAmountInUSD || minAmountInUSD < config.arbitrage.minProfitInUSD) {
 			//logger.debug(`Triangle removed due to minAmountInUSD (${minAmountInUSD}) is less than ${config.arbitrage.minProfitInUSD}`);
-			logger.info(`Remove 路径(USD Too Less) ：${clc.cyanBright(tri.id)} 利率: ${clcRate} minAmountInUSD: (${minAmountInUSD})`);
+			logger.info(`Remove Path(USD Too Less) ：${clc.cyanBright(tri.id)} Rate: ${clcRate} minAmountInUSD: (${minAmountInUSD})`);
 			continue;
 		}
 			
@@ -171,7 +171,7 @@ export class Helper {
           ts: tri.ts,
         };
         ranks.push(rank);
-		logger.info(`PUSH 路径 to Ranks  ：${clc.greenBright(tri.id)} 利率: ${clcRate} minAmountInUSD: (${minAmountInUSD})`);
+		logger.info(`PUSH Path to Ranks  ：${clc.greenBright(tri.id)} Rate: ${clcRate} minAmountInUSD: (${minAmountInUSD})`);
 	}
 	logger.info(`Ranks size after reduce: ${ranks.length}`);
     return ranks;
@@ -182,7 +182,7 @@ export class Helper {
   }
 
   static getTriangleRate(a: types.IEdge, b: types.IEdge, c: types.IEdge) {
-    // 利率 = (1/priceA/priceB*priceC-1)-1
+    // Rate = (1/priceA/priceB*priceC-1)-1
     // 资本金
       /*
       logger.debug("getTriangleRate...");

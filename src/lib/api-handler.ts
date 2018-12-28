@@ -86,6 +86,12 @@ export class ApiHandler {
       return;
     }
 
+    /*
+    if(exchange.id === ExchangeId.Hitbtc2) {
+        order.amount = order.amount * 0.95;
+    }*/
+    }*/
+
     // Check if there is enough balance
     let pairs: string[] = [];
     pairs = order.symbol.split('/');

@@ -1,6 +1,7 @@
 import { ITriangle } from './trading';
 
 export interface IRank {
+  triangle: ITriangle;
   stepA: string;
   stepB: string;
   stepC: string;

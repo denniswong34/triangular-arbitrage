@@ -152,6 +152,7 @@ export class Helper {
 		}
 			
         const rank: types.IRank = {
+		  triangle: tri,
           stepA: tri.a.coinFrom,
           stepB: tri.b.coinFrom,
           stepC: tri.c.coinFrom,

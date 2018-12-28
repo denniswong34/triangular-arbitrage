@@ -120,11 +120,11 @@ export class TriangularArbitrage extends Event {
       }
 	  
 	  logger.info("Before get rank called, below is the list of ranks:");
-	  const output1 = ranks.length > 5 ? ranks.slice(0, 5) : ranks.slice(0, ranks.length);
-      for (const rank of output1) {
-        const clcRate = rank.triangle.rate < 0 ? clc.redBright(rank.triangle.rate) : clc.greenBright(rank.triangle.rate);
-        const path = rank.triangle.id.length < 15 ? rank.triangle.id + ' '.repeat(15 - rank.triangle.id.length) : rank.triangle.id;
-        logger.info(`路径：${clc.cyanBright(path)} 利率: ${clcRate} Amount(USD): ${rank.triangle.minAmountInUSD}`);
+	  const output1 = candidates.length > 5 ? candidates.slice(0, 5) : ranks.slice(0, candidates.length);
+      for (const candidate of output1) {
+        const clcRate = candidate.rate < 0 ? clc.redBright(candidate.rate) : clc.greenBright(candidate.rate);
+        const path = candidate.id.length < 15 ? candidate.id + ' '.repeat(15 - candidate.id.length) : candidate.id;
+        logger.info(`路径：${clc.cyanBright(path)} 利率: ${clcRate}`);
       }
 
 	  //Remove low USD value candidate

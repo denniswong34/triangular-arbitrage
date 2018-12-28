@@ -126,7 +126,7 @@ export class TriangularArbitrage extends Event {
       for (const rank of output) {
         const clcRate = rank.triangle.rate < 0 ? clc.redBright(rank.triangle.rate) : clc.greenBright(rank.triangle.rate);
         const path = rank.triangle.id.length < 15 ? rank.triangle.id + ' '.repeat(15 - rank.triangle.id.length) : rank.triangle.id;
-        logger.info(`路径：${clc.cyanBright(path)} 利率: ${clcRate} Amount(USD): ${rank.triangle.amountInUSD}`);
+        logger.info(`路径：${clc.cyanBright(path)} 利率: ${clcRate} Amount(USD): ${rank.triangle.minAmountInUSD}`);
       }
 	  
       if (config.storage.tickRank && ranks.length > 0) {

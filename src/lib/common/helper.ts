@@ -146,6 +146,8 @@ export class Helper {
 		
 		//logger.debug(`Triangle after refill quantity and USD Value: ${JSON.stringify(tri)}`);
 		let minAmountInUSD = Math.min(tri.a.amountInUSD, tri.b.amountInUSD, tri.c.amountInUSD);
+		tri.minAmountInUSD = minAmountInUSD;
+		
 		if(!minAmountInUSD || minAmountInUSD < config.arbitrage.minProfitInUSD) {
 			//logger.debug(`Triangle removed due to minAmountInUSD (${minAmountInUSD}) is less than ${config.arbitrage.minProfitInUSD}`);
 			return;

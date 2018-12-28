@@ -47,6 +47,7 @@ const testRank = async () => {
   const storage = new Storage();
   const ranks: types.IRank[] = [];
   const rank: types.IRank = {
+    triangle: null,
     stepA: 'ETH/BTC',
     stepB: 'DLT/ETH',
     stepC: 'DLT/BTC',

@@ -39,6 +39,7 @@ export interface ITriangle {
   rate: number;
   // 时间戳
   ts: number;
+  minAmountInUSD: number;
 }
 
 export interface IPrecision {

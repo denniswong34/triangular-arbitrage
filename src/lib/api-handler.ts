@@ -90,7 +90,6 @@ export class ApiHandler {
     if(exchange.id === ExchangeId.Hitbtc2) {
         order.amount = order.amount * 0.95;
     }*/
-    }*/
 
     // Check if there is enough balance
     let pairs: string[] = [];

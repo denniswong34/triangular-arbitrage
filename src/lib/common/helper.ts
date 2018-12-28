@@ -11,6 +11,7 @@ const config = require('config');
 const excTime = require('execution-time');
 const binance = require('binance');
 const clc = require('cli-color');
+const exchangeTickerBlackList = {'hitbtc2': ['BCH']};
 
 export class Helper {
   static getPrivateKey(exchangeId: types.ExchangeId) {
@@ -142,6 +143,14 @@ export class Helper {
         if (profitRate[0].isLessThan(config.arbitrage.minRateProfit)) {
 			logger.info(`Remove Path(ProfitRate Too Less) ：${clc.cyanBright(tri.id)} Rate: ${clcRate}`);
 			continue;
+        }
+
+        if(exchangeTickerBlackList[exchange.id].indexOf(tri.a.coinFrom) !== -1 ||
+            exchangeTickerBlackList[exchange.id].indexOf(tri.b.coinFrom) !== -1 ||
+            exchangeTickerBlackList[exchange.id].indexOf(tri.c.coinFrom) !== -1
+        ) {
+            logger.info(`Remove Path(Ticker Blacklist) ：${clc.cyanBright(tri.id)} Rate: ${clcRate}`);
+            continue;
         }
 		
 		//Refill triangle quantity

@@ -170,9 +170,11 @@ export class Helper {
           ts: tri.ts,
         };
         ranks.push(rank);
+		logger.info(`PUSH 路径 to Ranks  ：${clc.greenBright(tri.id)} 利率: ${clcRate} minAmountInUSD: (${minAmountInUSD})`);
       };
-	
     await triangles.reduce(await processTriangle, <any>{},);
+	logger.info("Ranks size after reduce: ${ranks.length}");
+	
     return ranks;
   }
 

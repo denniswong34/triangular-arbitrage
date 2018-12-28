@@ -238,7 +238,7 @@ export class Helper {
     return {
       amount: symbol.precision.amount,
       price: symbol.precision.price,
-      cost: parseFloat(((symbol.limits.price.min ? symbol.limits.amount.min / symbol.limits.price.min : symbol.limits.amount.min * symbol.info.low)).toFixed(precision)),
+      cost: parseFloat(((symbol.limits.price.min ? symbol.limits.amount.min : symbol.limits.amount.min * symbol.info.low)).toFixed(precision)),
     };
   }
 

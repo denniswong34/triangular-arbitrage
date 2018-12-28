@@ -7,12 +7,19 @@ const delay = require('delay');
 const cmcTickerMap: any = {};
 const cmc = new ccxt.coinmarketcap();
 
+const CoinGecko = require('coingecko-api');
+const CoinGeckoClient = new CoinGecko();
+const specialTicker = ['NZDT/USD'];
+
 let createOrderFailCount : number = 0;
 
 export { ccxt };
 export class ApiHandler {
 
   async getTickerFromCMC(ticker: string) {
+      if(specialTicker.indexOf(ticker) !== -1) {
+          cmcTickerMap[ticker] = await CoinGeckoClient.coins.fetchTickers('nzed');
+      }
       if(!cmcTickerMap[ticker]) {
           cmcTickerMap[ticker] = (await cmc.fetchTicker(ticker)).last;
       }

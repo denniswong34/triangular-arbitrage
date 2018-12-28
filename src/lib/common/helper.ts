@@ -260,6 +260,10 @@ export class Helper {
    */
   static getBaseAmountByBC(triangle: types.ITriangle, freeAmount: BigNumber, minAmount: BigNumber) {
     const { a, b, c } = triangle;
+	
+	const aAmount = Helper.convertAmount(a.price, a.quantity, a.side);
+	logger.info(`A点的数量: ${aAmount}`);
+	
     // B点的数量
     const bAmount = Helper.convertAmount(b.price, b.quantity, b.side);
 	logger.info(`B点的数量: ${bAmount}`);
@@ -276,16 +280,16 @@ export class Helper {
 	logger.info(`c点数量: ${c2aAmount}`);
 
     // 选取数量最大的
-    const thanAmount = b2aAmount.isGreaterThan(c2aAmount) ? b2aAmount : c2aAmount;
-	logger.info(`选取数量最大的: ${thanAmount}`);
+	const minAvailableAmount = Math.min(aAmount, b2aAmount, c2aAmount, freeAmount);
+	logger.info(`选取数量最小的: ${minAvailableAmount}`);
 	logger.info(`minAmount: ${minAmount}`);
 	logger.info(`freeAmount: ${freeAmount}`);
 	
     // 选取数量 > 最小交易量 && 选取数量 < 可用余额
-    if (thanAmount.isGreaterThan(minAmount) && thanAmount.isLessThan(freeAmount)) {
-      return thanAmount;
-    }
-    return minAmount;
+    //if (thanAmount.isGreaterThan(minAmount) && thanAmount.isLessThan(freeAmount)) {
+    //  return thanAmount;
+    //}
+    return minAvailableAmount;
   }
 
   /**

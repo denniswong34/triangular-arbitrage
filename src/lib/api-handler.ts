@@ -87,7 +87,7 @@ export class ApiHandler {
     }
 
 
-    if(exchange.id === ExchangeId.Hitbtc2) {
+    if( exchange.id.toLowerCase() === 'hitbtc2' ) {
         order.amount = order.amount * 0.95;
     }
 

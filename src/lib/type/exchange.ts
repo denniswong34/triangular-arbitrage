@@ -33,7 +33,8 @@ export enum ExchangeId {
   Bitbank = 'bitbank',
   Bittrex = 'bittrex',
   Cryptopia = 'cryptopia',
-  Hitbtc = 'hitbtc2',
+  Hitbtc = 'hitbtc',
+  Hitbtc2 = 'hitbtc2',
   Cobinhood = 'cobinhood',
   Livecoin = 'livecoin',
   Okex = 'okex',
@@ -69,6 +70,10 @@ export const SupportExchanges = [
   {
       id: ExchangeId.Hitbtc,
       name: 'Hitbtc',
+  },
+  {
+        id: ExchangeId.Hitbtc2,
+        name: 'Hitbtc2',
   },
   {
       id: ExchangeId.Livecoin,

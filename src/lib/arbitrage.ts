@@ -27,7 +27,7 @@ export class TriangularArbitrage extends Event {
 
   async start(activeExchangeId?: types.ExchangeId) {
     const timer = Helper.getTimer();
-    logger.debug('启动三角套利机器人[开始]');
+    logger.debug('Triangular Arbitraging Bot [Start]');
     if (activeExchangeId) {
       this.activeExchangeId = activeExchangeId;
     }
@@ -35,6 +35,7 @@ export class TriangularArbitrage extends Event {
     try {
       // 初始化交易所
       await this.initExchange(this.activeExchangeId);
+	  /*
       if (types.ExchangeId.Binance === this.activeExchangeId) {
 		logger.info('----- Estimate (Binance) is called -----');
         const exchange = this.exchanges.get(this.activeExchangeId);
@@ -50,10 +51,11 @@ export class TriangularArbitrage extends Event {
       }
 
       logger.info('----- 机器人启动完成 -----');
+	  */
     } catch (err) {
       logger.error(`机器人运行出错(${Helper.endTimer(timer)}): ${err}`);
     }
-    logger.debug(`启动三角套利机器人[终了] ${Helper.endTimer(timer)}`);
+    logger.debug(`Triangular Arbitraging Bot [End] ${Helper.endTimer(timer)}`);
   }
 
   destroy() {

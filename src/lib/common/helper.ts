@@ -236,7 +236,7 @@ export class Helper {
     const precision = symbol.precision.amount ? symbol.precision.amount : 8;
     let cost = symbol.limits.cost;
     if(!cost) {
-      cost = parseFloat((symbol.limits.amount * symbol.limits.price).toFixed(precision);
+      cost = parseFloat((symbol.limits.amount * symbol.limits.price).toFixed(precision));
     }
 
     return {

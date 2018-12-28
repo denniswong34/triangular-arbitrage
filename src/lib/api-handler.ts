@@ -3,6 +3,7 @@ import * as types from './type';
 import { Bitbank } from 'bitbank-handler';
 import { logger, Helper } from './common';
 
+const delay = require('delay');
 const cmcTickerMap: any = {};
 const cmc = new ccxt.coinmarketcap();
 
@@ -34,25 +35,24 @@ export class ApiHandler {
   }
 
   async refillTriangleQuantity (exchange: types.IExchange, triangle: types.ITriangle) {
-	const api = <ccxt.Exchange>exchange.endpoint.private;
+    const api = <ccxt.Exchange>exchange.endpoint.private;
     if (!api) {
       return;
     }
-	
-	const { a, b, c } = triangle;
-	if(!a.quantity || !b.quantity || !c.quantity)
-	{
-		const [orderBookA, orderBookB, orderBookC] = await Promise.all([
-													api.fetchOrderBook(a.pair, 1),
-													api.fetchOrderBook(b.pair, 1),
-													api.fetchOrderBook(c.pair, 1)]);
-	
-		a.quantity = (a.side === 'buy') ? orderBookA.asks[0][1] : orderBookA.bids[0][1];
-		b.quantity = (b.side === 'buy') ? orderBookB.asks[0][1] : orderBookB.bids[0][1];
-		c.quantity = (c.side === 'buy') ? orderBookC.asks[0][1] : orderBookC.bids[0][1];
-		
-		//logger.debug(`Updated triangle: ${JSON.stringify(triangle)}`);
-	}
+
+    const { a, b, c } = triangle;
+    if ( !a.quantity || !b.quantity || !c.quantity )	{
+        const [orderBookA, orderBookB, orderBookC] = await Promise.all([
+            api.fetchOrderBook(a.pair, 1),
+            api.fetchOrderBook(b.pair, 1),
+            api.fetchOrderBook(c.pair, 1)]);
+
+        a.quantity = (a.side === 'buy') ? orderBookA.asks[0][1] : orderBookA.bids[0][1];
+        b.quantity = (b.side === 'buy') ? orderBookB.asks[0][1] : orderBookB.bids[0][1];
+        c.quantity = (c.side === 'buy') ? orderBookC.asks[0][1] : orderBookC.bids[0][1];
+
+        // logger.debug(`Updated triangle: ${JSON.stringify(triangle)}`);
+    }
   }
 
   async getFreeAmount(exchange: types.IExchange, coin: string) {
@@ -73,39 +73,37 @@ export class ApiHandler {
     if (!api) {
       return;
     }
-	
-	//Check if there is enough balance
-	let pairs : string[] = [];
-	
-	pairs = order.symbol.split("/");
-	if(order.side === "buy")
-	{
-		let freeAmount = 0;
-		freeAmount = await this.getFreeAmount(exchange, pairs[1]);
-		if(createOrderFailCount <= 5 && freeAmount < order.amount * order.price)
-		{
-			createOrderFailCount++;
-			return await this.createOrder(exchange, order);
-		} else {
-			createOrderFailCount = 0;
-			logger.info(`Balance ${freeAmount} not enough for createOrder: ${order}`);
-			return;
-		}
-	} else {
-		let freeAmount = 0;
-		freeAmount = await this.getFreeAmount(exchange, pairs[0]);
-		if(createOrderFailCount <= 5 && freeAmount < order.amount)
-		{
-			createOrderFailCount++;
-			return await this.createOrder(exchange, order);
-		} else {
-			createOrderFailCount = 0;
-			logger.info(`Balance ${freeAmount} not enough for createOrder: ${order}`);
-			return;
-		}
-	}
-	
-	createOrderFailCount = 0;
+
+    // Check if there is enough balance
+    let pairs: string[] = [];
+    pairs = order.symbol.split('/');
+    let freeAmount = 0;
+
+    if (order.side === 'buy') {
+        freeAmount = await this.getFreeAmount(exchange, pairs[1]);
+        if (createOrderFailCount < 5 && freeAmount < order.amount * order.price) {
+            logger.info(`createOrderFailCount: ${createOrderFailCount}`);
+            createOrderFailCount++;
+            await delay(1000);
+            return await this.createOrder(exchange, order);
+        } else if ( createOrderFailCount >= 5 ){
+            createOrderFailCount = 0;
+            logger.info(`Balance ${freeAmount} not enough for createOrder: ${JSON.stringify(order, null, 2)}`);
+            return await api.createOrder(order.symbol, order.type, order.side, freeAmount / order.price, order.price);
+        }
+    } else {
+        freeAmount = await this.getFreeAmount(exchange, pairs[0]);
+        if (createOrderFailCount < 5 && freeAmount < order.amount) {
+            createOrderFailCount++;
+            await delay(1000);
+            return await this.createOrder(exchange, order);
+        } else if ( createOrderFailCount >= 5 ){
+            createOrderFailCount = 0;
+            logger.info(`Balance ${freeAmount} not enough for createOrder: ${order}`);
+            return await api.createOrder(order.symbol, order.type, order.side, freeAmount, order.price);
+        }
+    }
+    createOrderFailCount = 0;
     return await api.createOrder(order.symbol, order.type, order.side, order.amount, order.price);
   }
 
@@ -116,13 +114,13 @@ export class ApiHandler {
     }
     return await api.fetchOrder(orderId, symbol);
   }
-  
+
   async queryOrderForKucoin(exchange: types.IExchange, orderId: string, symbol: string, side: string): Promise<ccxt.Order | undefined> {
     const api = <ccxt.Exchange>exchange.endpoint.private;
     if (!api) {
       return;
     }
-    return await api.fetchOrder(orderId, symbol, { type: (side === 'buy' ? "BUY" : "SELL") });
+    return await api.fetchOrder(orderId, symbol, { type: (side === 'buy' ? 'BUY' : 'SELL') });
   }
 
   async queryOrderStatus(exchange: types.IExchange, orderId: string, symbol: string) {

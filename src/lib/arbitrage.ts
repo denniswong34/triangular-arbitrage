@@ -119,7 +119,7 @@ export class TriangularArbitrage extends Event {
         return;
       }
 	  
-	  logger.info("Before get rank called, below is the list of ranks:");
+	  logger.info("======== Before get rank called, below is the list of ranks =========");
 	  const output1 = candidates.length > 5 ? candidates.slice(0, 5) : candidates.slice(0, candidates.length);
       for (const candidate of output1) {
         const clcRate = candidate.rate < 0 ? clc.redBright(candidate.rate) : clc.greenBright(candidate.rate);
@@ -130,6 +130,7 @@ export class TriangularArbitrage extends Event {
 	  //Remove low USD value candidate
       const ranks = await Helper.getRanks(exchange, candidates);
 	  
+	  logger.info("======== After get rank called, below is the list of ranks =========");
 	  const output2 = ranks.length > 5 ? ranks.slice(0, 5) : ranks.slice(0, ranks.length);
       for (const rank of output2) {
         const clcRate = rank.triangle.rate < 0 ? clc.redBright(rank.triangle.rate) : clc.greenBright(rank.triangle.rate);
@@ -144,6 +145,8 @@ export class TriangularArbitrage extends Event {
       // 更新套利数据
       if (ranks[0]) {
         logger.info(`选出套利组合第1名：${ranks[0].triangle.id}, Estimate Rate(Minus Trading Fee): ${ranks[0].profitRate[0]}`);
+		logger.info(JSON.stringify(ranks[0].triangle,null,2));
+		
         // 执行三角套利
         this.emit('placeOrder', exchange, ranks[0].triangle);
       } else {

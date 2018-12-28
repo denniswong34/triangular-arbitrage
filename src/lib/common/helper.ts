@@ -262,18 +262,25 @@ export class Helper {
     const { a, b, c } = triangle;
     // B点的数量
     const bAmount = Helper.convertAmount(b.price, b.quantity, b.side);
+	logger.info(`B点的数量: ${bAmount}`);
 
     // 换回A点的数量
     const b2aAmount = Helper.convertAmount(a.price, bAmount.toNumber(), a.side);
+	logger.info(`换回A点的数量: ${b2aAmount}`);
     // c点数量
     const c2aAmount = Helper.getConvertedAmount({
       side: triangle.c.side,
       exchangeRate: triangle.c.price,
       amount: triangle.c.quantity,
     })
+	logger.info(`c点数量: ${c2aAmount}`);
 
     // 选取数量最大的
     const thanAmount = b2aAmount.isGreaterThan(c2aAmount) ? b2aAmount : c2aAmount;
+	logger.info(`选取数量最大的: ${thanAmount}`);
+	logger.info(`minAmount: ${minAmount}`);
+	logger.info(`freeAmount: ${freeAmount}`);
+	
     // 选取数量 > 最小交易量 && 选取数量 < 可用余额
     if (thanAmount.isGreaterThan(minAmount) && thanAmount.isLessThan(freeAmount)) {
       return thanAmount;

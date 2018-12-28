@@ -11,7 +11,7 @@ const config = require('config');
 const excTime = require('execution-time');
 const binance = require('binance');
 const clc = require('cli-color');
-const exchangeTickerBlackList: any = {'hitbtc2': ['BCH']};
+const exchangeTickerBlackList: any = {'hitbtc2': ['BCH', 'GUSD']};
 
 export class Helper {
   static getPrivateKey(exchangeId: types.ExchangeId) {

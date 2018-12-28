@@ -234,8 +234,8 @@ export class Helper {
     logger.info(`Symbol: ` + JSON.stringify(symbol, null, 2));
 
     const precision = symbol.precision.amount ? symbol.precision.amount : 8;
-    let cost = symbol.limits.cost;
-    if(!cost) {
+    let cost: any = symbol.limits.cost;
+    if( ! cost ) {
       cost = parseFloat((symbol.limits.amount * symbol.limits.price).toFixed(precision));
     }
 

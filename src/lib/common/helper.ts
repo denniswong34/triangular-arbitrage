@@ -231,14 +231,14 @@ export class Helper {
       logger.debug(`Symbol is null in getPriceScale.. Pairs: ` + JSON.stringify(pairs) + `, pairName: ` + pairName);
       return;
     }
-    logger.info(`Symbol: ` + JSON.stringify(symbol, null, 2));
+    logger.debug(`Symbol: ` + JSON.stringify(symbol, null, 2));
 
     const precision = symbol.precision.amount ? symbol.precision.amount : 8;
 
     return {
       amount: symbol.precision.amount,
       price: symbol.precision.price,
-      cost: parseFloat(((symbol.limits.price.min ? symbol.limits.amount.min : symbol.limits.amount.min * symbol.info.low)).toFixed(precision)),
+      cost: parseFloat(((symbol.limits.price.min ? symbol.limits.amount.min * 2 : symbol.limits.amount.min * symbol.info.low)).toFixed(precision)),
     };
   }
 

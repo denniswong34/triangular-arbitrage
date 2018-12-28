@@ -261,32 +261,32 @@ export class Helper {
   static getBaseAmountByBC(triangle: types.ITriangle, freeAmount: BigNumber, minAmount: BigNumber) {
     const { a, b, c } = triangle;
 	
-	const aAmount = new BigNumber(a.quantity);
-	logger.info(`A点的数量: ${aAmount}`);
+	const aAmount = (a.side == "sell") ? new BigNumber(a.quantity) : new BigNumber(a.quantity * a.price);
+	logger.info(`A点的数量: ${aAmount} ${a.coinFrom}`);
 	
     // B点的数量
     const bAmount = Helper.convertAmount(b.price, b.quantity, b.side);
-	logger.info(`B点的数量: ${bAmount}`);
+	//logger.info(`B点的数量: ${bAmount}`);
 
     // 换回A点的数量
     const b2aAmount = Helper.convertAmount(a.price, bAmount.toNumber(), a.side);
-	logger.info(`换回A点的数量: ${b2aAmount}`);
+	logger.info(`B换回A点的数量: ${b2aAmount}  ${a.coinFrom}`);
     // c点数量
     const c2aAmount = Helper.getConvertedAmount({
       side: triangle.c.side,
       exchangeRate: triangle.c.price,
       amount: triangle.c.quantity,
     })
-	logger.info(`c点数量: ${c2aAmount}`);
+	logger.info(`C换回A数量: ${c2aAmount}  ${a.coinFrom}`);
 
     // 选取数量最大的
 	const amountList = [aAmount, b2aAmount, c2aAmount, freeAmount];
 	amountList.sort(function(a, b){return a.minus(b).toNumber()});
 	
 	const minAvailableAmount = amountList[0];
-	logger.info(`选取数量最小的: ${minAvailableAmount}`);
-	logger.info(`minAmount: ${minAmount}`);
-	logger.info(`freeAmount: ${freeAmount}`);
+	logger.info(`选取数量最小的: ${minAvailableAmount}  ${a.coinFrom}`);
+	logger.info(`minAmount: ${minAmount}  ${a.coinFrom}`);
+	logger.info(`freeAmount: ${freeAmount}  ${a.coinFrom}`);
 	
     // 选取数量 > 最小交易量 && 选取数量 < 可用余额
     //if (thanAmount.isGreaterThan(minAmount) && thanAmount.isLessThan(freeAmount)) {

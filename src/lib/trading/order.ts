@@ -4,6 +4,7 @@ import { logger, Helper } from '../common';
 import { Storage } from '../storage';
 
 const clc = require('cli-color');
+const delay = require('delay');
 export class Order extends ApiHandler {
 
   private worker = 0;
@@ -44,12 +45,21 @@ export class Order extends ApiHandler {
       }
       const nextB = async () => {
         logger.info('执行nextB...');
-        const orderRes = (exchange.id === types.ExchangeId.KuCoin) ?
-							await this.queryOrderForKucoin(exchange, testTrade.a.orderId, testTrade.a.pair, testTrade.a.side.toLowerCase()) : 
-							await this.queryOrder(exchange, testTrade.a.orderId, testTrade.a.pair);
-        if (!orderRes) {
-          return false;
+        let orderRes: any = {};
+        try{
+            orderRes = (exchange.id === types.ExchangeId.KuCoin) ?
+                await this.queryOrderForKucoin(exchange, testTrade.a.orderId, testTrade.a.pair, testTrade.a.side.toLowerCase()) :
+                await this.queryOrder(exchange, testTrade.a.orderId, testTrade.a.pair);
+            if (!orderRes) {
+                return false;
+            }
+        } catch (err) {
+            const errMsg = err.message ? err.message : err.msg;
+            logger.error(`订单A出错： ${errMsg}`);
+            return false;
         }
+
+
         logger.info(`查询订单状态： ${orderRes.status}`);
         // 交易成功时
         if (orderRes.status === 'closed') {

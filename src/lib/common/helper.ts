@@ -292,7 +292,7 @@ export class Helper {
     //if (thanAmount.isGreaterThan(minAmount) && thanAmount.isLessThan(freeAmount)) {
     //  return thanAmount;
     //}
-    return minAvailableAmount;
+    return (a.side === "buy") ? minAvailableAmount.dividedBy(new BigNumber(a.price)) : minAvailableAmount;
   }
 
   /**

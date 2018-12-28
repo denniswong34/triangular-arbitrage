@@ -126,7 +126,7 @@ export class ApiHandler {
     }
 
     logger.info(`queryOrder(${orderId}, ${symbol})`);
-    logger.info(`Exchange: ${JSON.stringify(exchange)}`);
+    logger.info(`Exchange: ${JSON.stringify(exchange.id)}`);
     return await api.fetchOrder(orderId, symbol);
   }
 

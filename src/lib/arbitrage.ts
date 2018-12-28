@@ -118,12 +118,20 @@ export class TriangularArbitrage extends Event {
       if (!candidates || candidates.length === 0) {
         return;
       }
+	  
+	  logger.info("Before get rank called, below is the list of ranks:");
+	  const output1 = ranks.length > 5 ? ranks.slice(0, 5) : ranks.slice(0, ranks.length);
+      for (const rank of output1) {
+        const clcRate = rank.triangle.rate < 0 ? clc.redBright(rank.triangle.rate) : clc.greenBright(rank.triangle.rate);
+        const path = rank.triangle.id.length < 15 ? rank.triangle.id + ' '.repeat(15 - rank.triangle.id.length) : rank.triangle.id;
+        logger.info(`路径：${clc.cyanBright(path)} 利率: ${clcRate} Amount(USD): ${rank.triangle.minAmountInUSD}`);
+      }
 
 	  //Remove low USD value candidate
       const ranks = await Helper.getRanks(exchange, candidates);
 	  
-	  const output = ranks.length > 5 ? ranks.slice(0, 5) : ranks.slice(0, ranks.length);
-      for (const rank of output) {
+	  const output2 = ranks.length > 5 ? ranks.slice(0, 5) : ranks.slice(0, ranks.length);
+      for (const rank of output2) {
         const clcRate = rank.triangle.rate < 0 ? clc.redBright(rank.triangle.rate) : clc.greenBright(rank.triangle.rate);
         const path = rank.triangle.id.length < 15 ? rank.triangle.id + ' '.repeat(15 - rank.triangle.id.length) : rank.triangle.id;
         logger.info(`路径：${clc.cyanBright(path)} 利率: ${clcRate} Amount(USD): ${rank.triangle.minAmountInUSD}`);

@@ -243,7 +243,7 @@ export class Helper {
     logger.debug(`Symbol: ` + JSON.stringify(symbol, null, 2));
 
     const precision = symbol.precision.amount ? symbol.precision.amount : 8;
-    const selfCalCost = parseFloat((((symbol.limits.price.min ? symbol.limits.price.min * 1.2 :
+    const selfCalCost = parseFloat((((symbol.limits.price.min ? symbol.limits.price.min * 2 :
         symbol.limits.amount.min * symbol.info.low)).toFixed(precision)));
 
     return {

@@ -149,7 +149,7 @@ export class ApiHandler {
           logger.info(`queryOrderForKucoin(${orderId}, ${symbol})`);
           return await api.fetchOrder(orderId, symbol, { type: (side === 'buy' ? 'BUY' : 'SELL') });
     } catch (err) {
-          logger.error(`queryOrder exception: ` + err.message);
+          logger.error(`queryOrderForKucoin exception: ` + err.message);
           logger.error(err.stack);
           return;
     }

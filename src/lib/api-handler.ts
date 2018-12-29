@@ -145,8 +145,14 @@ export class ApiHandler {
     if (!api) {
       return;
     }
-      logger.info(`queryOrderForKucoin(${orderId}, ${symbol})`);
-    return await api.fetchOrder(orderId, symbol, { type: (side === 'buy' ? 'BUY' : 'SELL') });
+    try {
+          logger.info(`queryOrderForKucoin(${orderId}, ${symbol})`);
+          return await api.fetchOrder(orderId, symbol, { type: (side === 'buy' ? 'BUY' : 'SELL') });
+    } catch (err) {
+          logger.error(`queryOrder exception: ` + err.message);
+          logger.error(err.stack);
+          return;
+    }
   }
 
   async queryOrderStatus(exchange: types.IExchange, orderId: string, symbol: string) {

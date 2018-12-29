@@ -100,7 +100,7 @@ export class Mocker extends ApiHandler {
       logger.error(`未获取交易精度${tradeTriangle.coin}！！ priceScale: ${JSON.stringify(priceScale, null, 2)}`);
       return;
     }
-    logger.debug(`获取交易精度${tradeTriangle.coin}: ` + JSON.stringify(priceScale));
+    logger.info(`获取交易精度${tradeTriangle.coin}: ` + JSON.stringify(priceScale));
 
     // 检查最小交易数量
     let minAmount;

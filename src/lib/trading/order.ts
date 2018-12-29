@@ -197,7 +197,7 @@ export class Order extends ApiHandler {
         logger.info('completedC...');
         // const orderRes = await this.queryOrder(exchange, tradeC.orderId, tradeC.pair);
           let orderRes: any = {};
-          try{
+          try {
               orderRes = (exchange.id === types.ExchangeId.KuCoin) ?
                   await this.queryOrderForKucoin(exchange, tradeC.orderId, tradeC.pair, tradeC.side.toLowerCase()) :
                   await this.queryOrder(exchange, tradeC.orderId, tradeC.pair);
@@ -206,7 +206,7 @@ export class Order extends ApiHandler {
               }
           } catch (err) {
               const errMsg = err.message ? err.message : err.msg;
-              logger.error(`queryOrder B 出错： ${errMsg}`);
+              logger.error(`queryOrder C 出错： ${errMsg}`);
               return false;
           }
         logger.info(`查询订单状态： ${orderRes.status}`);

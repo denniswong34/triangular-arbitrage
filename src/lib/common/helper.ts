@@ -249,8 +249,9 @@ export class Helper {
     return {
       amount: symbol.precision.amount,
       price: symbol.precision.price,
-      cost: symbol.limits.cost ? symbol.limits.cost.min ? symbol.limits.cost.min :
-          selfCalCost : selfCalCost,
+      cost: symbol.limits.cost ?
+              symbol.limits.cost.min ? symbol.limits.cost.min : selfCalCost :
+                selfCalCost,
     };
   }
 

@@ -113,6 +113,7 @@ export class Mocker extends ApiHandler {
         amount: priceScale.cost
       }).times(1.1);
     }
+    logger.info(`检查最小交易数量: ${minAmount} ${triangle.a.coinFrom.toUpperCase()}`);
 
     if (triangle.a.side === 'sell' && free.isLessThanOrEqualTo(minAmount)) {
      logger.error(`持有${free + ' ' + triangle.a.coinFrom},小于最低交易数量（${minAmount}）！！`);

@@ -46,7 +46,7 @@ export class Mocker extends ApiHandler {
     let feeRate = pairs[edge.pair].maker;
     if (!feeRate || feeRate <= 0) {
       logger.error(`未取得交易对的手续费！！`);
-      feeRate = 0.025;
+      feeRate = 0.0002;
       //return;
     }
     tradeEdge.amount = +amount.toFixed(priceScale.amount, 1);

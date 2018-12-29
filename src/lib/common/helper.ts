@@ -145,9 +145,9 @@ export class Helper {
 			continue;
         }
 
-        if(exchangeTickerBlackList[exchange.id] && exchangeTickerBlackList[exchange.id].indexOf(tri.a.coinFrom) !== -1 ||
+        if(exchangeTickerBlackList[exchange.id] && (exchangeTickerBlackList[exchange.id].indexOf(tri.a.coinFrom) !== -1 ||
             exchangeTickerBlackList[exchange.id].indexOf(tri.b.coinFrom) !== -1 ||
-            exchangeTickerBlackList[exchange.id].indexOf(tri.c.coinFrom) !== -1
+            exchangeTickerBlackList[exchange.id].indexOf(tri.c.coinFrom) !== -1)
         ) {
             logger.info(`Remove Path(Ticker Blacklist) ：${clc.cyanBright(tri.id)} Rate: ${clcRate}`);
             continue;

@@ -110,7 +110,7 @@ export class ApiHandler {
         } else if ( createOrderFailCount >= 5 ){
             createOrderFailCount = 0;
             logger.info(`Balance ${freeAmount} not enough for createOrder: ${JSON.stringify(order, null, 2)}`);
-            return await api.createOrder(order.symbol, order.type, order.side, freeAmount / order.price, order.price);
+            return await api.createOrder(order.symbol, order.type, order.side, freeAmount / order.price * 0.95, order.price);
         }
     } else {
         freeAmount = await this.getFreeAmount(exchange, pairs[0]);
@@ -121,7 +121,7 @@ export class ApiHandler {
         } else if ( createOrderFailCount >= 5 ){
             createOrderFailCount = 0;
             logger.info(`Balance ${freeAmount} not enough for createOrder: ${order}`);
-            return await api.createOrder(order.symbol, order.type, order.side, freeAmount, order.price);
+            return await api.createOrder(order.symbol, order.type, order.side, freeAmount  * 0.95, order.price);
         }
     }
     createOrderFailCount = 0;

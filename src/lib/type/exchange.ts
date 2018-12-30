@@ -40,6 +40,10 @@ export enum ExchangeId {
   Okex = 'okex',
   Huobipro = 'huobipro',
   Poloniex = 'poloniex',
+  Tradesatoshi = 'tradesatoshi',
+  Zb = 'zb',
+  Gateio = 'gateio',
+  Qryptos = 'qryptos',
 }
 
 export const SupportExchanges = [
@@ -90,6 +94,19 @@ export const SupportExchanges = [
   {
         id: ExchangeId.Poloniex,
   },
+  {
+        id: ExchangeId.Tradesatoshi,
+  },
+  {
+        id: ExchangeId.Zb,
+  },
+  {
+        id: ExchangeId.Gateio,
+  },
+  {
+        id: ExchangeId.Qryptos,
+  },
+
 ]
 
 export interface ICredentials {

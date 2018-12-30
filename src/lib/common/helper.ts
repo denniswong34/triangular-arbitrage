@@ -125,7 +125,8 @@ export class Helper {
   static async getRanks(exchange: types.IExchange, triangles: types.ITriangle[]) {
     const ranks: types.IRank[] = [];
 	let api = new ApiHandler();
-	
+
+	const balance = await api.getBalance(exchange);
 	for (let i = 0; i < triangles.length; i++) {
 		const tri : types.ITriangle = triangles[i];
 		
@@ -137,9 +138,16 @@ export class Helper {
         if (exchange.id === types.ExchangeId.Binance) {
           fee = [rate.times(0.1).toNumber(), rate.times(0.05).toNumber()];
         }
-		
-		const clcRate = tri.rate < 0 ? clc.redBright(tri.rate) : clc.greenBright(tri.rate);
+        const clcRate = tri.rate < 0 ? clc.redBright(tri.rate) : clc.greenBright(tri.rate);
         const profitRate = [rate.minus(fee[0]), rate.minus(fee[1])];
+
+        // check if it has available balance
+        const asset = (tri.a.side === 'buy' ? balance[tri.a.coinFrom] : balance[tri.a.coinTo]);
+        if (!asset) {
+            logger.info(`Remove Path(No available balance) ：${clc.cyanBright(tri.id)} Rate: ${clcRate}`);
+            continue;
+        }
+
         if (profitRate[0].isLessThan(config.arbitrage.minRateProfit)) {
 			logger.info(`Remove Path(ProfitRate Too Less) ：${clc.cyanBright(tri.id)} Rate: ${clcRate}`);
 			continue;

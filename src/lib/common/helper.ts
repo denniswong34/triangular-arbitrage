@@ -142,7 +142,8 @@ export class Helper {
         const profitRate = [rate.minus(fee[0]), rate.minus(fee[1])];
 
         // check if it has available balance
-        const asset = (tri.a.side === 'buy' ? balance[tri.a.coinFrom] : balance[tri.a.coinTo]);
+        let asset = 0;
+        asset = (tri.a.side === 'buy' ? balance[tri.a.coinFrom] : balance[tri.a.coinTo]);
         if (!asset) {
             logger.info(`Remove Path(No available balance) ：${clc.cyanBright(tri.id)} Rate: ${clcRate}`);
             continue;

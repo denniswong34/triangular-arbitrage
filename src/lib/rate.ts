@@ -22,7 +22,7 @@ export class Rate {
    * @param cost 数量*价格=总价
    */
   static convertAmount(price: number, cost: number, side: 'sell' | 'buy') {
-    const bigCost = new BigNumber(cost);
+    const bigCost = new BigNumber(parseFloat(cost.toFixed(8)));
     if (side === 'buy') {
       // amount / price = cost
       return bigCost.times(price);

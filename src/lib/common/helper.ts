@@ -126,7 +126,8 @@ export class Helper {
     const ranks: types.IRank[] = [];
 	let api = new ApiHandler();
 
-	const balance = await api.getBalance(exchange);
+	let balance: any = {}
+    balance =await api.getBalance(exchange);
 	for (let i = 0; i < triangles.length; i++) {
 		const tri : types.ITriangle = triangles[i];
 		
@@ -142,7 +143,9 @@ export class Helper {
         const profitRate = [rate.minus(fee[0]), rate.minus(fee[1])];
 
         // check if it has available balance
-        if (!(tri.a.side === 'buy' ? balance[tri.a.coinFrom] : balance[tri.a.coinTo])) {
+        let asset: any = {};
+        asset = (tri.a.side === 'buy' ? balance[tri.a.coinFrom] : balance[tri.a.coinTo]);
+        if (!asset) {
             logger.info(`Remove Path(No available balance) ：${clc.cyanBright(tri.id)} Rate: ${clcRate}`);
             continue;
         }

@@ -11,12 +11,16 @@ const CoinGecko = require('coingecko-api');
 const CoinGeckoClient = new CoinGecko();
 const specialTicker = ['NZDT/USD'];
 
+const cmcConvertedTicker: any = {'USD/USD': 'USDT/USD'};
+
 let createOrderFailCount : number = 0;
 
 export { ccxt };
 export class ApiHandler {
 
   async getTickerFromCMC(ticker: string) {
+      if( cmcConvertedTicker[ticker] )
+          ticker = cmcConvertedTicker[ticker];
       if(specialTicker.indexOf(ticker) !== -1) {
           cmcTickerMap[ticker] = await CoinGeckoClient.coins.fetchTickers('nzed');
       }

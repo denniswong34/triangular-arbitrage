@@ -11,7 +11,7 @@ const CoinGecko = require('coingecko-api');
 const CoinGeckoClient = new CoinGecko();
 const specialTicker = ['NZDT/USD'];
 
-const cmcConvertedTicker: any = {'USD/USD': 'USDT/USD'};
+const cmcConvertedTicker: any = {'USD/USD': 'USDT/USD', 'EUR/USD': 'EURT/USD'}
 
 let createOrderFailCount : number = 0;
 
